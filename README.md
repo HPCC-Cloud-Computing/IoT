@@ -55,23 +55,30 @@ The aim of the controller component is to make the interaction between the devic
 #### Description
 - Xây dựng một restful service trung gian để quản lý onem2m resource (thông qua các REST API)
     + Lấy trạng thái của application resource
-    + Tạo một application resource
     + Điều khiển application resource (thay đổi trạng thái)
+    + Tracking dữ liệu trạng thái của các sensor và đẩy lên public queue (CloudAMPQ)
 - Xây dựng bộ giả lập IPE: sinh dữ liệu trạng thái từ các sensor và gửi lên server CSE quản lý.
+
 #### Requirements:
 - Docker
 - Advanced Rest Client : giả lập RESTful request
 #### Run
-- `python main.py`
+- `pip install -r requirements.txt`
+- `python3 main.py`
 - Gửi các Restful request lên địa chỉ` http://127.0.0.1:9090`
     + GET `/resource/{app_id}/state` : lấy trạng thái của app resource app_id
     + GET `/resource/{app_id}/descriptor` :  lấy thông tin điều khiển của app resource app_id
     + GET `/resource/{app_id}/switchON`: điều khiển app resource (chỉ dành cho bộ giả lập Lamp)
     + GET `/resource/{app_id}/switchOFF`: điều khiển app resource (chỉ dành cho bộ giả lập Lamp)
+- Tự động monitor trạng thái của một sensor chỉ định và đẩy lên một message queue 
+- Server MQ: 
+[CloudAMQP](https://white-mynah-bird.rmq.cloudamqp.com/#/queues/yhjylhjo/hello)
 
 ## Reference
 - http://www.eclipse.org/om2m/
 - https://wiki.eclipse.org/OM2M/one#Getting_started
 - http://wiki.eclipse.org/OM2M/one/Clone
 - http://wiki.eclipse.org/OM2M/one/Web_Interface
+- https://www.cloudamqp.com/docs/index.html
+- https://rabbitpy.readthedocs.io/en/latest/index.html
 
