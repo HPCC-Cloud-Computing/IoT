@@ -21,3 +21,4 @@ def consume_message(queue_name='hello', all=False):
             else:
                 queue[0].pprint(True)
             return queue[0]
+
