@@ -3,10 +3,16 @@
 ##### Requirements
 - [docker](https://www.docker.com/)
 
+##### Components:
+- oneM2M - port 8080
+- web_service (python) : port 9090
+- grafana : port 3000
+- influxdb: port 8084
+- cavisor
+
 ##### Run 
-1. `docker pull huanphan/onem2m`
-2. `docker run -it -p "8080:8080" onem2m:0.1`
-3. Vào đường dẫn `http://127.0.0.1:8080/webpage` để truy cập giao diện Web interface của oneM2M (authenticate với user/password: admin/admin)
+1. `docker-compose up`
+2. Vào đường dẫn `http://127.0.0.1:8080/webpage` để truy cập giao diện Web interface của oneM2M (authenticate với user/password: admin/admin)
 ##### Config 
 
 ### OneM2M Features
@@ -52,6 +58,8 @@ The aim of the controller component is to make the interaction between the devic
 > [Docs here](https://wiki.eclipse.org/OM2M/one/REST_API)
 
 ### DEMO
+#### Workflow
+![arch]()
 #### Description
 - Xây dựng một restful service trung gian để quản lý onem2m resource (thông qua các REST API)
     + Lấy trạng thái của application resource
