@@ -59,7 +59,7 @@ The aim of the controller component is to make the interaction between the devic
 
 ### DEMO
 #### Workflow
-![arch]()
+![arch](https://github.com/huanpc/IoT-1/blob/master/%5BoneM2M%5D%5Bhuanpc%5D/arch.jpg)
 #### Description
 - Xây dựng một restful service trung gian để quản lý onem2m resource (thông qua các REST API)
     + Lấy trạng thái của application resource
