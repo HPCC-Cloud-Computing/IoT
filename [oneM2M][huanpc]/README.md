@@ -4,11 +4,11 @@
 - [docker](https://www.docker.com/)
 
 ##### Components:
-- oneM2M - port 8080
+- [oneM2M](http://www.eclipse.org/om2m/) - port 8080
 - web_service (python) : port 9090
-- grafana : port 3000
-- influxdb: port 8084
-- cavisor
+- [grafana](https://github.com/grafana/grafana-docker) : port 3000
+- [influxdb](https://github.com/tutumcloud/influxdb): port 8084
+- [cadvisor](https://hub.docker.com/r/google/cadvisor/)
 
 ##### Run 
 1. `docker-compose up`
@@ -27,10 +27,13 @@
     + ![cấu trúc](http://wiki.eclipse.org/images/e/e3/One-web-applications.png)
     + Container resources  ![](http://wiki.eclipse.org/images/0/00/One-web-containers.png)
     + ContentInstance Resource ![](http://wiki.eclipse.org/images/7/77/One-web-contetnInstances.png)
+
 ##### Kiến trúc OneM2M:
 ![](https://wiki.eclipse.org/images/2/21/IPE_Sample_Architecture.png)
+
 ###### CSE
 - Server quản lý, lưu trữ
+
 ###### IPE
 - The aim of an Interworking Proxy Entity is to create an interface from a device technology / specific network to the oneM2M standard.
 - Điều khiển trực tiếp các sensor
