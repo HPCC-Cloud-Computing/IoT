@@ -1,9 +1,9 @@
 FROM debian
 
 ## to build it
-## sudo docker build -t debian-kura-nb .
+## sudo docker build -t debian-kura .
 ## to run it
-## sudo docker run -i -t debian-kura-nb -p 80:80 
+## sudo docker run -i -t debian-kura -p 80:80 
 
 ##Them nguon jdk-8 Do mac dinh chua co
 
@@ -25,5 +25,3 @@ RUN [ -f /lib/$(arch)-linux-gnu/libudev.so.0 ] || ln -sf /lib/$(arch)-linux-gnu/
 EXPOSE 80
 EXPOSE 5002
 
-##Khoi dong osgi
-CMD /opt/eclipse/kura/bin/start_kura.sh
