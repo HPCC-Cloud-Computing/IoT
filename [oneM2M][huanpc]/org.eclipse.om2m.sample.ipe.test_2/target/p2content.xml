@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <units size='1'>
-  <unit id='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160725-1806'>
-    <update id='org.eclipse.om2m.sample.ipe.test_2' range='[0.0.0,1.0.0.20160725-1806)' severity='0'/>
+  <unit id='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160815-1631'>
+    <update id='org.eclipse.om2m.sample.ipe.test_2' range='[0.0.0,1.0.0.20160815-1631)' severity='0'/>
     <properties size='4'>
       <property name='org.eclipse.equinox.p2.name' value='2'/>
       <property name='maven-groupId' value='org.eclipse.om2m.sample.ipe.test_2'/>
@@ -9,8 +9,8 @@
       <property name='maven-version' value='1.0.0-SNAPSHOT'/>
     </properties>
     <provides size='3'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160725-1806'/>
-      <provided namespace='osgi.bundle' name='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160725-1806'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160815-1631'/>
+      <provided namespace='osgi.bundle' name='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160815-1631'/>
       <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
     </provides>
     <requires size='6'>
@@ -22,13 +22,13 @@
       <required namespace='java.package' name='org.osgi.util.tracker' range='1.5.1'/>
     </requires>
     <artifacts size='1'>
-      <artifact classifier='osgi.bundle' id='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160725-1806'/>
+      <artifact classifier='osgi.bundle' id='org.eclipse.om2m.sample.ipe.test_2' version='1.0.0.20160815-1631'/>
     </artifacts>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
       <instructions size='1'>
         <instruction key='manifest'>
-          Bundle-SymbolicName: org.eclipse.om2m.sample.ipe.test_2;singleton:=true&#xA;Bundle-Version: 1.0.0.20160725-1806&#xA;
+          Bundle-SymbolicName: org.eclipse.om2m.sample.ipe.test_2;singleton:=true&#xA;Bundle-Version: 1.0.0.20160815-1631&#xA;
         </instruction>
       </instructions>
     </touchpointData>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-SymbolicName: org.eclipse.om2m.sample.ipe.test_2;singleton:=tru
  e
 Bundle-Name: 2
-Bundle-Version: 1.0.0.20160725-1806
+Bundle-Version: 1.0.0.20160815-1631
 Require-Bundle: org.eclipse.om2m.commons;bundle-version="1.0.0"
 Bundle-ManifestVersion: 2
 Bundle-Activator: org.eclipse.om2m.sample.ipe.test_2.Activator

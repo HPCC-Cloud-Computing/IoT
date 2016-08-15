@@ -8,6 +8,22 @@
       <product
             application="org.eclipse.ant.core.antRunner"
             name="sample.ipe.test">
+         <property
+               name="appName"
+               value="sample.ipe.test">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="ipe_test_2"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ant.core.antRunner"
+            name="sample.ipe.test">
+         <property
+               name="appName"
+               value="sample.ipe.test">
+         </property>
       </product>
    </extension>
 

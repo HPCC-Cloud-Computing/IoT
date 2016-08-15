@@ -15,6 +15,7 @@ public class ObixUtil {
 	public final static int TEMPERATURE_SENSOR_TYPE = 1;
 	public final static int AIR_HUMIDITY_SENSOR_TYPE = 2;
 	public final static int LIGHT_SENSOR_TYPE = 3;
+	public final static int HUMAN_APPEARANCE = 4;
 	
 	public static String getSensorDescriptorRep(String appId, String ipeId) {
 		String prefix = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/"
@@ -112,6 +113,10 @@ public class ObixUtil {
 			case LIGHT_SENSOR_TYPE:
 				category = "light";
 				unit = "ISO";
+				break;
+			case HUMAN_APPEARANCE:
+				category = "human_appearance";
+				unit = "s";
 				break;
 		}				
 		obj.add(new Str("category", category));
