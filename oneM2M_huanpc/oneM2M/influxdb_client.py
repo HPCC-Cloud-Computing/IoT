@@ -3,8 +3,10 @@ __author__ = 'huanpc'
 from influxdb import InfluxDBClient
 import xml.etree.ElementTree as ET
 
+
 def store_data(xml_data=None):
     root = ET.fromstring(xml_data)
+    ipe_id = root.find('./*[@name="ipeId"]').attrib['val']
     app_id = root.find('./*[@name="appId"]').attrib['val']
     category = root.find('./*[@name="category"]').attrib['val']
     data = int(root.find('./*[@name="data"]').attrib['val'])
@@ -14,6 +16,7 @@ def store_data(xml_data=None):
             "measurement": "sensor_status",
             "tags": {
                 "sensor_id": app_id,
+                "ipe_id": ipe_id,
                 "category": category
             },
             "fields": {
@@ -30,6 +33,7 @@ def store_data(xml_data=None):
 # if __name__ == '__main__':
 #     xml_data = '''
 #     <obj>
+#         <str val="demo" name="ipeId"/>
 #         <str val="TEMPERATURE_SENSOR" name="appId"/>
 #         <str val="temperature" name="category"/>
 #         <int val="77" name="data"/>

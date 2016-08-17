@@ -57,22 +57,27 @@ services:
   container_name: grafana
 ###################################################################
  oneM2M:
-  image: huanphan/onem2m:0.3
+  image: huanphan/onem2m:0.5
   ports:
    - "8080:8080"
-  links:
-   - "web-service:web-service"
   networks:
    - default
   hostname: oneM2M
+  command: "nohup /usr/src/start-cse.sh &"
 ###################################################################
  web-service:
-  image: web_service:0.1
+  image: web_service:0.2
   ports:
    - "9090:9090"
+  environment:
+   - HOST_NAME=web-service
+   - ONEM2M_HOST_NAME=oneM2M
+  volumes:
+   - "/home/huanpc/python_tutorial/oneM2M:/usr/src/app"
   networks:
    - default
   hostname: web-service
+  command: "python3 /usr/src/app/main.py"
 ###################################################################
 networks:    
     default:
