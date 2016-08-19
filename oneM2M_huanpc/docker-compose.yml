@@ -13,7 +13,7 @@ services:
    - PRE_CREATE_DB=oneM2M
   volumes:
    - ./influxdb:/data
-  container_name: indfluxDB
+  # container_name: indfluxDB
   networks:
    - default
   hostname: influxsrv
@@ -56,13 +56,20 @@ services:
    - "influxsrv:influxsrv"
   container_name: grafana
 ###################################################################
- oneM2M:
-  image: huanphan/onem2m:0.5
+ onem2m:
+  image: huanphan/onem2m:0.7
   ports:
-   - "8080:8080"
+   - "8080"
   networks:
    - default
-  hostname: oneM2M
+  environment:
+   - ONEM2M_SENSOR_CONFIG=2-2-20;2-2-20
+   - ONEM2M_IPE_ID=test21242
+  volumes:
+   - "./ipe_config:/usr/src/workspace/src/main/resources"
+  hostname: onem2m
+  # links:
+  #  - "web-service:web-service"
   command: "nohup /usr/src/start-cse.sh &"
 ###################################################################
  web-service:
@@ -71,12 +78,15 @@ services:
    - "9090:9090"
   environment:
    - HOST_NAME=web-service
-   - ONEM2M_HOST_NAME=oneM2M
+   - ONEM2M_HOST_NAME=onem2m
+   - INFLUXDB_HOST_NAME=influxsrv
   volumes:
    - "/home/huanpc/python_tutorial/oneM2M:/usr/src/app"
   networks:
    - default
   hostname: web-service
+  # links:
+  #  - "oneM2M:oneM2M"
   command: "python3 /usr/src/app/main.py"
 ###################################################################
 networks:    

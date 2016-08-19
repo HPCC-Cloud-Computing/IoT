@@ -3,7 +3,6 @@
 __author__ = 'huanpc'
 
 import asyncio
-import influxdb_client
 
 import http.client
 
@@ -15,18 +14,19 @@ import sys
 
 import cloudAMPQclient
 
+import influxdb_client
 import os
 
 PROTOCOL = 'http'
 HOST = '0.0.0.0'
 PORT = 9090
 M2M_HOST = '127.0.0.1'
-if os.environ['ONEM2M_HOST_NAME']:
+if os.environ.get('ONEM2M_HOST_NAME'):
     M2M_HOST = os.environ['ONEM2M_HOST_NAME']
 M2M_PORT = '8080'
 DOMAIN = M2M_HOST + ':' + M2M_PORT
 HOST_NAME = HOST
-if os.environ['HOST_NAME']:
+if os.environ.get('HOST_NAME'):
     HOST_NAME = os.environ['HOST_NAME']
 
 logger = logging.getLogger('RESOURCE_TRACKING')
@@ -105,30 +105,33 @@ def get_all_resource_state():
 
 @asyncio.coroutine
 def monitor_all_register(request):
-    # app_ids = ['TEMPERATURE_SENSOR', 'AIR_HUMIDITY_SENSOR', 'LIGHT_SENSOR']
-    for resource_id in get_all_resource_id():
-        monitor_register_one(resource_id)
+    one_m2m_host = request.match_info.get('oneM2M_host')
+    one_m2m_uri = one_m2m_host+':8080'
+    api = 'sample'
+    logger.info("DOMAIN: " + DOMAIN)
+    logger.info("monitor_all: " + api)
+    for resource_id in get_all_resource_id(api=api, one_m2m_uri=one_m2m_uri):
+        monitor_register_one(resource_id, one_m2m_uri=one_m2m_uri)
     return web.Response(status=200, body=' '.encode('utf-8'))
 
 
-def get_all_resource_id():
+def get_all_resource_id(api, one_m2m_uri):
     # http://127.0.0.1:8080/~/mn-cse/mn-name?fu=1&api=sample&ty=2
     # <m2m:uril xmlns:m2m="http://www.onem2m.org/xml/protocols">/mn-cse/mn-name/AIR_HUMIDITY_SENSOR_1 /mn-cse/mn-name/AIR_HUMIDITY_SENSOR_2 /mn-cse/mn-name/AIR_HUMIDITY_SENSOR_3 /mn-cse/mn-name/AIR_HUMIDITY_SENSOR_4 /mn-cse/mn-name/AIR_HUMIDITY_SENSOR_5 /mn-cse/mn-name/HUMAN_APPEARANCE /mn-cse/mn-name/TEMPERATURE_SENSOR_1 /mn-cse/mn-name/TEMPERATURE_SENSOR_2 /mn-cse/mn-name/TEMPERATURE_SENSOR_3 /mn-cse/mn-name/TEMPERATURE_SENSOR_4 /mn-cse/mn-name/TEMPERATURE_SENSOR_5</m2m:uril>
-    resource_uri = '/~/mn-cse/mn-name?fu=1&api=sample&ty=2'
-    con = http.client.HTTPConnection(DOMAIN)
+    resource_uri = '/~/mn-cse/mn-name?fu=1&api={}&ty=2'.format(api)
+    con = http.client.HTTPConnection(one_m2m_uri)
     header = {'X-M2M-Origin': 'admin:admin'}
     con.request('GET', resource_uri, None, header)
     response = con.getresponse().read().decode()
     string_start = '<m2m:uril xmlns:m2m="http://www.onem2m.org/xml/protocols">'
     response = response[response.find(string_start) + len(string_start):response.find('</m2m:uril>')]
     list_uri = response.split(' ')
-    # logger.info(str(list_uri))
     return list_uri
 
 
-def monitor_register_one(resource_uri):
+def monitor_register_one(resource_uri, one_m2m_uri):
     resource_uri = '/~' + resource_uri + '/DATA'
-    con = http.client.HTTPConnection(DOMAIN)
+    con = http.client.HTTPConnection(one_m2m_uri)
     header = {'X-M2M-Origin': 'admin:admin', "Content-type": "application/xml;ty=23", "X-M2M-NM": "SUB_MY_SENSOR",
               "Connection": "close"}
     body = """
@@ -147,7 +150,7 @@ def monitor_register(request):
     app_id = request.match_info.get('app_id')
     resource_uri = '/~/' + 'mn-cse/mn-name' + '/' + app_id + '/' + 'DATA'
     con = http.client.HTTPConnection(DOMAIN)
-    header = {'X-M2M-Origin': 'admin:admin', "Content-type": "application/xml;ty=23", "X-M2M-NM": "SUB_MY_SENSOR",
+    header = {'X-M2M-Origin': 'admin:admin', "Content-type": "application/xml;ty=23", "X-M2M-NM": "SUB_MY_SENSOR_2",
               "Connection": "close"}
     body = """
         <m2m:sub xmlns:m2m="http://www.onem2m.org/xml/protocols">
@@ -220,11 +223,11 @@ def monitor(request):
     raw_data = data[start_index - 1:end_index + len('</obj>') + 1]
     # data = raw_data.replace('&lt;', '<').replace('&quot;', '"')
     # logger.info('---> Publish message to CloudAMPQ')
-    # logger.info(data)
+    logger.info(raw_data)
     # cloudAMPQclient.publish_message(data)
     logger.info('---> Store data to influxdb')
     influxdb_client.store_data(raw_data)
-    return web.Response(status=204, body=' '.encode('utf-8'))
+    return web.Response(status=200, body=' '.encode('utf-8'))
     #     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     # <obj>
     #     <str val="TEMPERATURE_SENSOR" name="appId"/>
@@ -257,7 +260,7 @@ def init(loop):
 
     app.router.add_route('POST', '/monitor', monitor)
 
-    app.router.add_route('GET', '/monitor/all/register', monitor_all_register)
+    app.router.add_route('GET', '/{oneM2M_host}/monitor/all/register', monitor_all_register)
 
     app.router.add_route('GET', '/monitor/register/{app_id}', monitor_register)
 
