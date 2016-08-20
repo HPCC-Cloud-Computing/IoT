@@ -21,7 +21,9 @@ RUN dpkg -i kura_2.0.0_raspberry-pi-2_installer.deb
 ## Hack for ubuntu
 RUN [ -f /lib/$(arch)-linux-gnu/libudev.so.0 ] || ln -sf /lib/$(arch)-linux-gnu/libudev.so.1 /lib/$(arch)-linux-gnu/libudev.so.0
 
-## Bind cong 80 cua may chinh vao cong 5002 may chay kura
+## Bind cong 80 để kết nối kura web
 EXPOSE 80
+## Bind cong 5002 để  telnet osgi
 EXPOSE 5002
-
+## Bind cong 1450 để kết nối iagent
+EXPOSE 1450
