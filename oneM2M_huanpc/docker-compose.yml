@@ -63,8 +63,8 @@ services:
   networks:
    - default
   environment:
-   - ONEM2M_SENSOR_CONFIG=2-2-20;2-2-20
-   - ONEM2M_IPE_ID=test21242
+   - ONEM2M_SENSOR_CONFIG=2-2-20;1-2-20;3-2-20;4-1-50
+   - ONEM2M_IPE_ID=test_sample
   volumes:
    - "./ipe_config:/usr/src/workspace/src/main/resources"
   hostname: onem2m

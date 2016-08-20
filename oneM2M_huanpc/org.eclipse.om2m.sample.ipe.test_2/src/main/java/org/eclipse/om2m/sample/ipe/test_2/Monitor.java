@@ -9,9 +9,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
+import org.eclipse.om2m.commons.constants.ResourceType;
 import org.eclipse.om2m.commons.constants.ResponseStatusCode;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.Container;
@@ -37,7 +40,7 @@ public class Monitor {
 	private SensorListener sensorListener;
 	public ArrayList<String> sensorIdListByConfig = new ArrayList<String>();
 	public ArrayList<Integer> sensorTypeListByConfig = new ArrayList<Integer>();
-	public ArrayList<Long> sensorResponseByConfig = new ArrayList<Long>();
+	public ArrayList<Long> sensorTimeResponseByConfig = new ArrayList<Long>();
 
 	public Monitor(CseService cseService) {
 		CSE = cseService;
@@ -45,8 +48,9 @@ public class Monitor {
 
 	public void start() {
 		System.out.println("Starting Monitor");				
-		this.sensorIdListByConfig.add("HUMAN_APPEARANCE");
-		this.sensorTypeListByConfig.add(ObixUtil.HUMAN_APPEARANCE);
+//		this.sensorIdListByConfig.add("HUMAN_APPEARANCE");
+//		this.sensorTypeListByConfig.add(ObixUtil.HUMAN_APPEARANCE);
+//		this.sensorTimeResponseByConfig.add((long) 20);
 		readConfigFromFile();		
 		// Create sensor resources
 		createListSensorResources();
@@ -108,28 +112,51 @@ public class Monitor {
 		}
 	}
 	public void readConfigFromFile(){
-		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		InputStream is = classloader.getResourceAsStream(this.CONFIG_FILE);
-		
-		try(BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-		    String line = br.readLine();
-		    while (line != null) {		   
-		        String [] tokens = line.split(",");
-		        int typeOfSensor = Integer.valueOf(tokens[0]);
+		// Get from Environment variable
+		Map<String, String> env = System.getenv();
+		if((env.get("ONEM2M_IPE_ID")!= null)&&(env.get("ONEM2M_SENSOR_CONFIG")!= null)){
+			ipeId = env.get("ONEM2M_IPE_ID");
+			ipeId += '_'+generateString(new Random(),"0123456789", 5);
+			String raw = env.get("ONEM2M_SENSOR_CONFIG");
+//			2-5-20;2-5-20
+			String[] items = raw.split(";");
+			for(String item : items){
+				String [] tokens = item.split("-");
+				int typeOfSensor = Integer.valueOf(tokens[0]);
 		        int numOfSensor = Integer.valueOf(tokens[1]);
-		        createListSensor(typeOfSensor, numOfSensor);
-		        line = br.readLine();
-		    }		    
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		        long timeResponse = Integer.valueOf(tokens[2]);
+		        createListSensor(typeOfSensor, numOfSensor, timeResponse);
+			}
+		}else{
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			InputStream is = classloader.getResourceAsStream(this.CONFIG_FILE);
+			
+			try(BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+			    String line = br.readLine();
+			    while (line != null) {		   
+			    	if(line.contains("#")){
+			    		ipeId = line.replace("#", "");
+			    	}else{
+			    		String [] tokens = line.split(",");
+				        int typeOfSensor = Integer.valueOf(tokens[0]);
+				        int numOfSensor = Integer.valueOf(tokens[1]);
+				        long timeResponse = Integer.valueOf(tokens[2]);
+				        createListSensor(typeOfSensor, numOfSensor, timeResponse);	
+			    	}		        
+			        line = br.readLine();
+			    }		    
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
 		}
+		
 	}
 	
-	public void createListSensor(int type, int number){		
+	public void createListSensor(int type, int number, long timeResponse){		
 		String sensorIdPrefix = "";
 		switch (type) {
 			case ObixUtil.TEMPERATURE_SENSOR_TYPE:			
@@ -148,6 +175,7 @@ public class Monitor {
 		for(int i=1;i<=number;i++){
 			this.sensorIdListByConfig.add(sensorIdPrefix+String.valueOf(i));
 			this.sensorTypeListByConfig.add(type);
+			this.sensorTimeResponseByConfig.add(timeResponse);
 		}
 	}
 	
@@ -192,10 +220,10 @@ public class Monitor {
 	private class SensorListener extends Thread {
 
 		private boolean running = true;
-		private OneSensorListener[] _listListeners = new OneSensorListener[8];
+		private OneSensorListener[] _listListeners = new OneSensorListener[sensorIdListByConfig.size()];
 		@Override
 		public void run() {	
-			while (running) {	
+//			while (running) {	
 //				for(int i = 0; i<sensorIdList.length; i++){
 //					createDataContentInstance(sensorTypeList[i], sensorIdList[i]);
 //				}
@@ -209,17 +237,17 @@ public class Monitor {
 //				}
 //			}				
 				for(int i = 0; i<sensorIdListByConfig.size(); i++){
-					_listListeners[i] = new OneSensorListener(sensorResponseByConfig.get(i), sensorTypeListByConfig.get(i), sensorIdListByConfig.get(i));
+					_listListeners[i] = new OneSensorListener(sensorTimeResponseByConfig.get(i), sensorTypeListByConfig.get(i), sensorIdListByConfig.get(i));
 					_listListeners[i].start();
 				}
-			}
+//			}
 
 		}
 
 		public void stopThread() {
 			running = false;
 			for(int i = 0; i<sensorIdListByConfig.size(); i++){			
-				_listListeners[i].stop();
+				_listListeners[i].stopThread();;
 			}
 		}
 
@@ -235,6 +263,7 @@ public class Monitor {
 				this._timeResponse = timeResponse;
 			_type = type;
 			_sensorId = sensorId;
+//			createSubDataContentInstance(type, sensorId);
 		}
 		@Override
 		public void run() {	
@@ -259,19 +288,42 @@ public class Monitor {
 		int sensorValue = 10 + (int) (Math.random() * 100);
 
 		// Create the data contentInstance
-		String content = ObixUtil.getSensorDataRep(sensorValue, type, sensorId);
+		String content = ObixUtil.getSensorDataRep(sensorValue, type, sensorId, ipeId);
 		String targetId = "/" + CSE_ID + "/" + CSE_NAME + "/"
 				+ sensorId + "/" + DATA;
 		ContentInstance cin = new ContentInstance();
 		cin.setContent(content);
 		cin.setContentInfo(MimeMediaType.OBIX);
-		RequestSender.createContentInstance(targetId, cin);
-		
+		RequestSender.createContentInstance(targetId, cin);		
 	}
+	
+	public static void createSubDataContentInstance(int type, String sensorId){
+		// Simulate a random measurement of the sensor
+		int sensorValue = 10 + (int) (Math.random() * 100);
+
+		// Create the data contentInstance
+		String content = ObixUtil.getDataSubscriber();
+		String targetId = "/" + CSE_ID + "/" + CSE_NAME + "/"
+				+ sensorId + "/" + DATA;
+		ContentInstance cin = new ContentInstance();
+		cin.setContent(content);
+		cin.setContentInfo(MimeMediaType.XML);
+		RequestSender.createContentInstanceXML(targetId, "SUBSCRIPTION", cin, ResourceType.SUBSCRIPTION);		
+	}
+	
 	public static void createDataSubscriber(int type, String sensorId){
 		String targetId = "/" + CSE_ID + "/" + CSE_NAME + "/"
 				+ sensorId + "/" + DATA;
 	}
-
+	
+	public static String generateString(Random rng, String characters, int length)
+	{
+	    char[] text = new char[length];
+	    for (int i = 0; i < length; i++)
+	    {
+	        text[i] = characters.charAt(rng.nextInt(characters.length()));
+	    }
+	    return new String(text);
+	}
 
 }

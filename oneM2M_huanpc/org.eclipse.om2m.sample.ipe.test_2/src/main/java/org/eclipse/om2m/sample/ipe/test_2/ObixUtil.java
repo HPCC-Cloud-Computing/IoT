@@ -21,6 +21,7 @@ public class ObixUtil {
 		String prefix = "/" + Constants.CSE_ID + "/" + Constants.CSE_NAME + "/"
 				+ appId;
 		Obj obj = new Obj();
+		
 
 		Op opGet = new Op();
 		opGet.setName("GET");
@@ -96,7 +97,7 @@ public class ObixUtil {
 		return ObixEncoder.toString(obj);
 	}
 
-	public static String getSensorDataRep(int value, int type, String appId) {
+	public static String getSensorDataRep(int value, int type, String appId, String ipeId) {
 		Obj obj = new Obj();
 		obj.add(new Str("appId", appId));
 		String category = " ";
@@ -118,18 +119,24 @@ public class ObixUtil {
 				category = "human_appearance";
 				unit = "s";
 				break;
-		}				
+		}
+		obj.add(new Str("ipeId", ipeId));
 		obj.add(new Str("category", category));
 		obj.add(new Int("data", value));
 		obj.add(new Str("unit", unit));
 		return ObixEncoder.toString(obj);
 	}
-//	public static String getDataSubscriber(){
+	public static String getDataSubscriber(){
 //		Obj obj = new Obj();
-//		obj.add(new Str("category", category));
-//		obj.add(new Int("data", value));
+//		obj.add(new Str("su", "http://0.0.0.0:9090/monitor"));
+//		obj.add(new Int("nct", 2));
 //		return ObixEncoder.toString(obj);
-//	}
+		String s = "<m2m:sub xmlns:m2m=&quot;http://www.onem2m.org/xml/protocols&quot;>"+ 
+				"<nct>2</nct>"+
+				"<nu>http://0.0.0.0:9090/monitor</nu>"+
+				"</m2m:sub>";
+		return s;
+	}
 	public static String getMessage(String message) {
 		Obj obj = new Obj();
 		obj.add(new Str("message", message));

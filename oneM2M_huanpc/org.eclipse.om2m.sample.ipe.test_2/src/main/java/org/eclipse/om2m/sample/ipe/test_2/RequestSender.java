@@ -32,7 +32,20 @@ public class RequestSender {
 		request.setReturnContentType(MimeMediaType.OBJ);
 		request.setContent(resource);
 		request.setName(name);
-		request.setOperation(Operation.CREATE);
+		request.setOperation(Operation.CREATE);		
+		return CSE.doRequest(request);
+	}
+	
+	public static ResponsePrimitive createResourceXML(String targetId, String name, Resource resource, int resourceType){
+		RequestPrimitive request = new RequestPrimitive();
+		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+		request.setTargetId(targetId);
+		request.setResourceType(BigInteger.valueOf(resourceType));
+		request.setRequestContentType(MimeMediaType.XML);
+		request.setReturnContentType(MimeMediaType.OBJ);
+		request.setContent(resource);
+		request.setName(name);
+		request.setOperation(Operation.CREATE);		
 		return CSE.doRequest(request);
 	}
  
@@ -48,6 +61,14 @@ public class RequestSender {
 		return createResource(targetId, name, resource, ResourceType.CONTENT_INSTANCE);
 	}
  
+	public static ResponsePrimitive createContentInstance(String targetId, String name, ContentInstance resource, int resourceType){
+		return createResource(targetId, name, resource, resourceType);
+	}
+	
+	public static ResponsePrimitive createContentInstanceXML(String targetId, String name, ContentInstance resource, int resourceType){
+		return createResourceXML(targetId, name, resource, resourceType);
+	}
+	
 	public static ResponsePrimitive createContentInstance(String targetId, ContentInstance resource){
 		return createContentInstance(targetId, null, resource);
 	}
