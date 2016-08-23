@@ -18,7 +18,7 @@ RUN apt-get update && \
 RUN wget http://ftp.daumkakao.com/eclipse/kura/releases/2.0.0/kura_2.0.0_raspberry-pi-2_installer.deb
 RUN dpkg -i kura_2.0.0_raspberry-pi-2_installer.deb
 
-## Hack for ubuntu
+## Trick java serverlet
 RUN [ -f /lib/$(arch)-linux-gnu/libudev.so.0 ] || ln -sf /lib/$(arch)-linux-gnu/libudev.so.1 /lib/$(arch)-linux-gnu/libudev.so.0
 
 ## Bind cong 80 để kết nối kura web
@@ -27,3 +27,6 @@ EXPOSE 80
 EXPOSE 5002
 ## Bind cong 1450 để kết nối iagent
 EXPOSE 1450
+
+##Chay bash khi run container
+RUN /bin/bash
