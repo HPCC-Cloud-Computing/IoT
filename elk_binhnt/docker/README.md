@@ -21,5 +21,24 @@
     ```
     
 ## Hướng dẫn chạy Kibana container
+  + Build docker image Kibana bằng lệnh
+    
+      ```
+      sudo docker build -t kibana .
+      ```
+    Ngoài cách build thủ công còn có thể sử dụng image có sẵn trên docker hub: "kibana" (một bản OFFICIAL REPOSITORY)
+    
+  + Chay docker image Kibana
+    Chạy image Kibana bằng cách trỏ tới Docker container chạy Elasticsearch (ví dụ elegant_brahmagupta):
+      
+      ```
+      sudo docker run --link elegant_brahmagupta:elasticsearch -d -p 5601:5601 kibana
+      ```
+    
+    Ngoài ra có thể chạy Kibana image bằng cách trỏ tới địa chỉ ip của server chạy Elasticsearch:
+      
+      ```
+      sudo docker run --name some-kibana -e ELASTICSEARCH_URL=http://some-elasticsearch:9200 -p 5601:5601 -d kibana
+      ```
 
 ## Hướng dẫn chạy Logstash container
