@@ -49,5 +49,7 @@ RUN set -ex \
 
 COPY docker-entrypoint.sh /
 
+RUN chmod 777 /docker-entrypoint.sh
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["-e", ""]
