@@ -94,9 +94,22 @@ if __name__ == '__main__':
         process_request(random.random())
 ```
 3.  Visit http://localhost:8000/ to view the metrics.
-![]()
-4.  Visit http://localhost:9090/ to visualize the metrics.
-![]()
+![](https://github.com/cloudcomputinghust/IoT/blob/survey/oneM2M_huanpc/prometheus/Selection_043.png)
+4. Register a endpoint metrics for Prometheus server
+- Edit prometheus.yml 
+```
+scrape_configs:
+  - job_name: 'prometheus'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['localhost:9090']
+```
+- Restart prometheus container
+5.  Visit http://localhost:9090/ to visualize the metrics.
+![](https://github.com/cloudcomputinghust/IoT/blob/survey/oneM2M_huanpc/prometheus/Selection_042.png)
 
 ## Reference
 - https://prometheus.io/docs/introduction/install/
