@@ -1,0 +1,27 @@
+# #curl -Lo kubectl http://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubectl && chmod +x kubectl
+# #wget https://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubelet
+etcd:
+  image: gcr.io/google_containers/etcd-amd64:3.0.4
+  net: host
+  command: ['/usr/local/bin/etcd', '--data-dir=/var/etcd/data']
+
+apiserver: 
+  image: gcr.io/google_containers/kube-apiserver-amd64:v1.4.0-beta.8
+  net: host
+  command: ["/usr/local/bin/kube-apiserver","--etcd-servers=http://127.0.0.1:2379", "--service-cluster-ip-range=172.17.17.1/24", "--bind-address=0.0.0.0", "--insecure-bind-address=0.0.0.0", "--v=2"]
+
+controller:  
+  image: gcr.io/google_containers/kube-controller-manager-amd64:v1.4.0-beta.8
+  net: host
+  command: ["/usr/local/bin/kube-controller-manager", "--master=127.0.0.1:8080","--v=2"]
+
+scheduler:  
+  image: gcr.io/google_containers/kube-scheduler-amd64:v1.4.0-beta.8
+  net: host
+  command: ["/usr/local/bin/kube-scheduler", "--master=127.0.0.1:8080", "--v=2"]
+
+proxy:  
+  image: gcr.io/google-containers/kube-proxy-amd64:v1.4.0-beta.8
+  net: host
+  command: ['/usr/local/bin/kube-proxy', '--master=http://127.0.0.1:8080', '--v=2']
+  privileged: true
