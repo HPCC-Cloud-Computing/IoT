@@ -57,7 +57,7 @@ services:
   container_name: grafana
 ###################################################################
  onem2m:
-  image: huanphan/onem2m:0.7
+  image: huanphan/onem2m:0.8
   ports:
    - "8080"
   networks:
@@ -70,7 +70,7 @@ services:
   hostname: onem2m
   # links:
   #  - "web-service:web-service"
-  command: "nohup /usr/src/start-cse.sh &"
+  command: "nohup /usr/src/start-cse.sh &; sh /usr/src/start-mn-cse.sh"
 ###################################################################
  web-service:
   image: web_service:0.2

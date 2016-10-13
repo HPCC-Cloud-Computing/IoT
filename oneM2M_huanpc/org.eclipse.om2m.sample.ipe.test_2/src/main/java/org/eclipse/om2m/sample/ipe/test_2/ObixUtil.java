@@ -97,7 +97,7 @@ public class ObixUtil {
 		return ObixEncoder.toString(obj);
 	}
 
-	public static String getSensorDataRep(int value, int type, String appId, String ipeId) {
+	public static String getSensorDataRep(int value, int type, String appId, String ipeId, String clusterId) {
 		Obj obj = new Obj();
 		obj.add(new Str("appId", appId));
 		String category = " ";
@@ -121,6 +121,7 @@ public class ObixUtil {
 				break;
 		}
 		obj.add(new Str("ipeId", ipeId));
+		obj.add(new Str("clusterId", clusterId));
 		obj.add(new Str("category", category));
 		obj.add(new Int("data", value));
 		obj.add(new Str("unit", unit));

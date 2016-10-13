@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
-Require-Bundle: org.eclipse.om2m.commons;bundle-version="1.0.0"
+Require-Bundle: org.eclipse.om2m.commons;bundle-version="1.0.0",com.go
+ ogle.gson;bundle-version="2.2.4"
 Bundle-ActivationPolicy: lazy
-Bundle-Version: 1.0.0.20160820-1827
+Bundle-Version: 1.0.0.20161013-0354
 Bundle-Name: 2
 Bundle-Activator: org.eclipse.om2m.sample.ipe.test_2.Activator
 Bundle-ManifestVersion: 2
