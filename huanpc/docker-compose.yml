@@ -1,0 +1,93 @@
+version: "2"
+
+services:
+ influxsrv:
+  image: "tutum/influxdb:latest"
+  ports:
+   - "8084:8083"
+   - "8086:8086"
+  expose:
+   - "8090"
+   - "8099"
+  environment:
+   - PRE_CREATE_DB=oneM2M
+  volumes:
+   - ./influxdb:/data
+  # container_name: indfluxDB
+  networks:
+   - default
+  hostname: influxsrv
+###################################################################
+ grafana-storage:
+  image: "busybox:latest"
+  volumes:
+   - ./grafana_storage/:/var/lib/grafana
+  container_name: grafana-storage
+###################################################################
+ cadvisor:
+  image: "google/cadvisor:latest"
+  volumes:
+   - "/:/rootfs:ro"
+   - "/var/run:/var/run:rw"
+   - "/sys:/sys:ro"
+   - "/var/lib/docker/:/var/lib/docker:ro"
+  links:
+   - "influxsrv:influxsrv"
+  ports:
+   - "8081:8080"
+  command: "-storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxsrv:8086"
+###################################################################
+ grafana:
+  image: "grafana/grafana"
+  ports:
+   - "3000:3000"
+   - "8000:80"
+  environment:
+   - INFLUXDB_HOST=localhost
+   - INFLUXDB_PORT=8086
+   - INFLUXDB_NAME=oneM2M
+   - INFLUXDB_USER=root
+   - INFLUXDB_PASS=root
+   - GF_SERVER_ROOT_URL=http://grafana.server.name
+   - GF_SECURITY_ADMIN_PASSWORD=secret
+  volumes_from:
+   - grafana-storage
+  links:
+   - "influxsrv:influxsrv"
+  container_name: grafana
+###################################################################
+ onem2m:
+  image: huanphan/onem2m:0.8
+  ports:
+   - "8080"
+  networks:
+   - default
+  environment:
+   - ONEM2M_SENSOR_CONFIG=2-2-20;1-2-20;3-2-20;4-1-50
+   - ONEM2M_IPE_ID=test_sample
+  volumes:
+   - "./ipe_config:/usr/src/workspace/src/main/resources"
+  hostname: onem2m
+  # links:
+  #  - "web-service:web-service"
+  command: "nohup /usr/src/start-cse.sh &; sh /usr/src/start-mn-cse.sh"
+###################################################################
+ web-service:
+  image: web_service:0.2
+  ports:
+   - "9090:9090"
+  environment:
+   - HOST_NAME=web-service
+   - ONEM2M_HOST_NAME=onem2m
+   - INFLUXDB_HOST_NAME=influxsrv
+  volumes:
+   - "/home/huanpc/python_tutorial/oneM2M:/usr/src/app"
+  networks:
+   - default
+  hostname: web-service
+  # links:
+  #  - "oneM2M:oneM2M"
+  command: "python3 /usr/src/app/main.py"
+###################################################################
+networks:    
+    default:
