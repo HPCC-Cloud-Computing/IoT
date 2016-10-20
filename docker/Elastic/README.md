@@ -4,9 +4,10 @@
   + Build docker image Elasticsearch bằng lệnh
     
       ```
-      #cd tới thư mục chứa dockerfile Elasticsearch
       docker build -t elasticsearch .
       ```
+    Lưu ý trước khi chạy lệnh trên thì phải trỏ tới thư mục chứa docker file
+    
     Ngoài cách build thủ công còn có thể sử dụng image có sẵn trên docker hub: "elasticsearch" (một bản OFFICIAL REPOSITORY)
     
   + Chạy docker image Elasticsearch
@@ -25,9 +26,10 @@
   + Build docker image Kibana bằng lệnh
     
       ```
-      #cd tới thư mục chứa dockerfile Kibana
       docker build -t kibana .
       ```
+    Lưu ý trước khi chạy lệnh trên thì phải trỏ tới thư mục chứa docker file
+      
     Ngoài cách build thủ công còn có thể sử dụng image có sẵn trên docker hub: "kibana" (một bản OFFICIAL REPOSITORY)
     
   + Chay docker image Kibana
@@ -47,9 +49,10 @@
   + Build docker image Logstash bằng lệnh
     
       ```
-      #cd tới thư mục chứa dockerfile Logstash
       docker build -t logstash .
       ```
+    Lưu ý trước khi chạy lệnh trên thì phải trỏ tới thư mục chứa docker file  
+    
     Ngoài cách build thủ công còn có thể sử dụng image có sẵn trên docker hub: "logstash" (một bản OFFICIAL REPOSITORY)
 
   + Chạy docker image Logstash
