@@ -4,7 +4,8 @@
   + Build docker image Elasticsearch bằng lệnh
     
       ```
-      sudo docker build -t elasticsearch .
+      #cd tới thư mục chứa dockerfile Elasticsearch
+      docker build -t elasticsearch .
       ```
     Ngoài cách build thủ công còn có thể sử dụng image có sẵn trên docker hub: "elasticsearch" (một bản OFFICIAL REPOSITORY)
     
@@ -24,7 +25,8 @@
   + Build docker image Kibana bằng lệnh
     
       ```
-      sudo docker build -t kibana .
+      #cd tới thư mục chứa dockerfile Kibana
+      docker build -t kibana .
       ```
     Ngoài cách build thủ công còn có thể sử dụng image có sẵn trên docker hub: "kibana" (một bản OFFICIAL REPOSITORY)
     
@@ -45,7 +47,8 @@
   + Build docker image Logstash bằng lệnh
     
       ```
-      sudo docker build -t kibana .
+      #cd tới thư mục chứa dockerfile Logstash
+      docker build -t logstash .
       ```
     Ngoài cách build thủ công còn có thể sử dụng image có sẵn trên docker hub: "logstash" (một bản OFFICIAL REPOSITORY)
 
