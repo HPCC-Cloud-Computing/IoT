@@ -83,4 +83,36 @@
 
 Ngoài ra script còn đồng thời lưu trữ dữ liệu lấy được ra file text, trong các folder có tên trùng với index name trong Elasticsearch nhằm tránh trường hợp Elasticsearch bị lỗi.
 
-
+Ví dụ cấu trúc lưu trữ:
+backup
+├── count-per-region
+│   ├── 2016-10-19
+│   │   ├── 2016-10-19T21:10:00
+│   │   └── 2016-10-19T22:10:00
+│   ├── 2016-10-20
+│   └── 2016-10-21
+├── day-stats-summary
+│   ├── 2016-10-19
+│   │   └── 2016-10-19
+│   ├── 2016-10-20
+│   │   └── 2016-10-20
+│   └── 2016-10-21
+│       └── 2016-10-23
+├── hour-stats-summary
+│   ├── 2016-10-19
+│   │   ├── 2016-10-19T21
+│   │   └── 2016-10-19T22
+│   ├── 2016-10-20
+│   └── 2016-10-21
+├── people-per-region
+│   ├── 2016-10-19
+│   ├── 2016-10-20
+│   └── 2016-10-21
+└── visit-durations
+    ├── 2016-10-19
+    │   └── 2016-10-19
+    ├── 2016-10-20
+    │   └── 2016-10-20
+    └── 2016-10-21
+        └── 2016-10-21
+Trong mỗi file dữ liệu được lưu ở dạng json với cấu trúc tương ứng với từng index đã được mô tả ở trên.                             
