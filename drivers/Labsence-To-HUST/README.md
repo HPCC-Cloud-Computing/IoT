@@ -85,6 +85,7 @@ Ngoài ra script còn đồng thời lưu trữ dữ liệu lấy được ra fi
 
 Ví dụ cấu trúc lưu trữ:
 backup
+
 ├── count-per-region
 │   ├── 2016-10-19
 │   │   ├── 2016-10-19T21:10:00
