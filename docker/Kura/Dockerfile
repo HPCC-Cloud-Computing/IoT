@@ -11,7 +11,7 @@ RUN echo "deb http://ftp.de.debian.org/debian jessie-backports main" >> /etc/apt
 
 ## Cai dat cac goi phan mem can thiet
 RUN apt-get update && \
-    apt-get install -y apt-utils unzip ethtool dos2unix telnet bind9 hostapd isc-dhcp-server iw monit wget openjdk-8-jdk  wireless-tools cron byobu && \
+    apt-get install -y apt-utils unzip ethtool dos2unix telnet bind9 hostapd isc-dhcp-server iw monit wget openjdk-8-jdk  wireless-tools cron && \
     rm -rf /var/lib/apt/lists/*
 #Tao crontab khi khoi dong may
 COPY onboot-cron /etc/cron.d/onboot-cron
