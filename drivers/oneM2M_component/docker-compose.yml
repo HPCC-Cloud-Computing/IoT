@@ -73,13 +73,15 @@ services:
   command: "nohup /usr/src/start-cse.sh &; sh /usr/src/start-mn-cse.sh"
 ###################################################################
  web-service:
-  image: web_service:0.2
+  image: web_service:latest
   ports:
    - "9090:9090"
-  environment:
-   - HOST_NAME=web-service
-   - ONEM2M_HOST_NAME=onem2m
-   - INFLUXDB_HOST_NAME=influxsrv
+   - "8001:8001"
+  #environment:
+  # - HOST_NAME=web-service
+  # - ONEM2M_HOST_NAME=onem2m
+  # - INFLUXDB_HOST_NAME=influxsrv
+  env_file: docker-env
   volumes:
    - "./monitor-middleware:/usr/src/app"
   networks:
