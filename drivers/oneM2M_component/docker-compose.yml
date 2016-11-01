@@ -83,7 +83,7 @@ services:
   # - INFLUXDB_HOST_NAME=influxsrv
   env_file: docker-env
   volumes:
-   - "/home/huanpc/python_tutorial/oneM2M:/usr/src/app"
+   - "./monitor-middleware:/usr/src/app"
   networks:
    - default
   hostname: web-service
