@@ -7,32 +7,8 @@ import time
 from influxdb import InfluxDBClient
 import xml.etree.ElementTree as ET
 
+EXPORT_PORT = '8001'
 
-
-# def f(i=None):
-#   g.set(i)
-#   pass
-#
-# # with gd():
-# #   i+=1
-# #   g.set(i)
-# #   pass
-#
-# # Decorate function with metric.
-# @REQUEST_TIME.time()
-# def process_request(t):
-#     """A dummy function that takes some time."""
-#     time.sleep(t)
-#
-# if __name__ == '__main__':
-#     # Start up the server to expose the metrics.
-#     start_http_server(8001)
-#
-#     # Generate some requests.
-#     while True:
-#         i+=1
-#         f(i)
-#         process_request(random.random())
 
 def export_data(xml_data=None):
     root = ET.fromstring(xml_data)
@@ -56,11 +32,11 @@ def export_data(xml_data=None):
         }
     ]
 
-class PrometheusClient:
 
+class PrometheusClient:
     def __init__(self):
         #     # Start up the server to expose the metrics.
-        start_http_server(8001)
+        start_http_server(EXPORT_PORT)
         self.g = Gauge('sensor_data', 'Value gathered by sensor', ['sensor_id', 'ipe_id', 'category_id', 'unit'])
 
     def export_data(self, xml_data=None):
@@ -85,5 +61,3 @@ class PrometheusClient:
         #     }
         # ]
         self.g.labels(app_id, ipe_id, category, unit).set(data)
-
-

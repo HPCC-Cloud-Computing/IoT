@@ -30,7 +30,7 @@ def store_data(xml_data=None):
     influxdb_host = 'localhost'
     if os.environ.get('INFLUXDB_HOST_NAME'):
         influxdb_host = os.environ['INFLUXDB_HOST_NAME']
-    client = InfluxDBClient(influxdb_host, 8086, 'root', 'root', 'oneM2M')
+    client = InfluxDBClient(influxdb_host, os.environ.get('INFLUXDB_PORT'), 'root', 'root', 'oneM2M')
     client.write_points(json_body)
     # result = client.query('select * from sensor_status;')
     # print("Result: {0}".format(result))
