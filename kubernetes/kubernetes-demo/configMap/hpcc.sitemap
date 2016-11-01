@@ -1,0 +1,26 @@
+sitemap default label="HPCC Center" 
+{
+Frame label="Working Room"
+{
+Text item=Temperature0
+Text item=Temperature1
+Text item=Temperature2
+Text item=Temperature3
+Text item=Temperature4
+Text item=Temperature5
+Text item=Temperature6
+Text item=Temperature7
+Text item=Temperature8
+Text item=Temperature9
+Text item=Humidity0
+Text item=Humidity1
+Text item=Humidity2
+Text item=Humidity3
+Text item=Humidity4
+Text item=Humidity5
+Text item=Humidity6
+Text item=Humidity7
+Text item=Humidity8
+Text item=Humidity9
+}
+}
