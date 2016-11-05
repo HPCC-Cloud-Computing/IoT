@@ -53,3 +53,27 @@ PING a1.weave.local (10.32.0.2) 56(84) bytes of data.
 1 packets transmitted, 1 received, 0% packet loss, time 0ms
 rtt min/avg/max/mdev = 0.366/0.366/0.366/0.000 ms
 ```
+
+# Run Weave Net with Kubernetes in Just One Line
+#### Install Weave Net
+```bash
+$ kubectl apply -f https://git.io/weave-kube
+```
+ - This one-liner will create a DaemonSet, a Kubernetes feature that runs one instance on each node
+#### Check Weave Net
+```bash
+$ kubectl get pods --all-namespaces
+    NAMESPACE     NAME              READY     STATUS    RESTARTS   AGE
+    [...]
+    kube-system   weave-net-4mylt   2/2       Running   0          18m
+    kube-system   weave-net-dwueb   2/2       Running   0          18m
+    kube-system   weave-net-tj1xv   2/2       Running   0          18m
+```
+ - all pods that Kubernetes starts will be attached to the Weave network
+```bash
+ $ kubectl run --image=weaveworks/hello-world hello
+    $ kubectl get pods -o wide
+    NAME                     READY STATUS   RESTARTS  AGE  IP
+    hello-2533203682-5opib   1/1   Running  0         9s   10.32.0.2
+```
+ - We can see that the IP address of this pod is within Weave’s default range.
