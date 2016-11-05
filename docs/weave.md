@@ -4,7 +4,7 @@
  > Weave Net creates a virtual network that connects Docker containers across multiple hosts and enables their automatic discovery. With Weave Net, portable microservices-based applications consisting of multiple containers can run anywhere: on one host, multiple hosts or even across cloud providers and data centers. Applications use the network just as if the containers were all plugged into the same network switch, without having to configure port mappings, ambassadors or links.
 Services provided by application containers on the weave network can be exposed to the outside world, regardless of where they are running. Similarly, existing internal systems can be opened to accept connections from application containers irrespective of their location..
 
-![introducing](/images/weave_01.png)
+![introducing](./images/weave_01.png)
 
 ### Instructions to run Weave Net
 *Require Docker (version 1.6.0 or later)*
