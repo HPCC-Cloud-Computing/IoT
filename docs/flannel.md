@@ -43,3 +43,30 @@ $ sudo docker -d --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} &
 ```
 ### Testing Flannel Networking 
 ![Testing](https://raw.githubusercontent.com/huanpc/IoT-1/master/docs/images/flannel_02.jpg)
+
+# Install CoreOS [ETCD](https://github.com/coreos/etcd/releases/)
+```bash
+$ ETCD_VER=v3.0.14
+$ DOWNLOAD_URL=https://github.com/coreos/etcd/releases/download
+$ curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o 
+$ /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+$ mkdir -p /tmp/test-etcd && tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C $ /tmp/test-etcd --strip-components=1
+
+$ /tmp/test-etcd/etcd --version
+Git SHA: 8a37349
+Go Version: go1.6.3
+Go OS/Arch: linux/amd64
+# start a local etcd server
+$ /tmp/test-etcd/etcd
+
+# write,read to etcd
+$ ETCDCTL_API=3 /tmp/test-etcd/etcdctl --endpoints=localhost:2379 put foo "bar"
+$ ETCDCTL_API=3 /tmp/test-etcd/etcdctl --endpoints=localhost:2379 get foo
+```
+
+### Run in Docker
+```bash
+$ docker run --name etcd quay.io/coreos/etcd:v3.0.14
+```
+
+
