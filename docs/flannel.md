@@ -9,7 +9,7 @@
  + No Docker port-based mapping
  + Containers reach each other through IP
  + Packets encapsulated using UDP, and soon VxLAN
- ![](https://raw.githubusercontent.com/coreos/flannel/master/packet-01.png)
+ ![](https://raw.githubusercontent.com/huanpc/IoT-1/master/docs/images/flannel_01.png)
 ### Instructions to run Flannel
 1. Build flannel on each host
 ```bash
@@ -40,4 +40,4 @@ $ sudo ifconfig docker0 ${FLANNEL_SUBNET}
 $ sudo docker -d --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} &
 ```
 ### Testing Flannel Networking 
-![Testing](http://image.slidesharecdn.com/dockernetworking201-141219121503-conversion-gate02/95/tutorial-on-using-coreos-flannel-for-docker-networking-9-638.jpg?cb=1426786746)
+![Testing](https://raw.githubusercontent.com/huanpc/IoT-1/master/docs/images/flannel_02.jpg)
