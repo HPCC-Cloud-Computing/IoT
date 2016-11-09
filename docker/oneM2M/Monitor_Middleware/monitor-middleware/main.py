@@ -25,6 +25,8 @@ M2M_HOST = '127.0.0.1'
 if os.environ.get('ONEM2M_HOST_NAME'):
     M2M_HOST = os.environ['ONEM2M_HOST_NAME']
 M2M_PORT = '8080'
+if os.environ.get('ONEM2M_PORT'):
+    M2M_PORT = os.environ['ONEM2M_PORT']
 DOMAIN = M2M_HOST + ':' + M2M_PORT
 HOST_NAME = HOST
 if os.environ.get('HOST_NAME'):
@@ -108,7 +110,7 @@ def get_all_resource_state():
 @asyncio.coroutine
 def monitor_all_register(request):
     one_m2m_host = request.match_info.get('oneM2M_host')
-    one_m2m_uri = one_m2m_host+':8080'
+    one_m2m_uri = one_m2m_host+':'+M2M_PORT
     api = 'sample'
     logger.info("DOMAIN: " + DOMAIN)
     logger.info("monitor_all: " + api)
@@ -223,10 +225,11 @@ def monitor(request):
     start_index = data.find('<obj>')
     end_index = data.find('</obj>')
     raw_data = data[start_index - 1:end_index + len('</obj>') + 1]
-    # data = raw_data.replace('&lt;', '<').replace('&quot;', '"')
-    # logger.info('---> Publish message to CloudAMPQ')
     logger.info(raw_data)
-    # cloudAMPQclient.publish_message(data)
+    if cloudAMPQclient.publish_message(data):
+        logger.info('---> Publish message to CloudAMPQ')
+    else:
+        logger.info('---> Cant connect to AMPQ server')
     logger.info('---> Store data to influxdb')
     # influxdb_client.store_data(raw_data)
     logger.info('---> Export data to prometheus')
