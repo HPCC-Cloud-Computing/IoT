@@ -1,0 +1,28 @@
+
+metadata:
+    name: om2m
+spec:
+    replicas: 1
+    selector: 
+      app: om2m
+    template:
+      metadata:
+        name: om2m
+        labels:
+          app: om2m
+        spec:
+          containers:
+          - name: om2m
+            image: huanphan/onem2m:fix-config
+            ports:
+            - containerPort: 8080
+            volumeMounts:
+            - name: ipe-config
+              mountPath: /usr/src/workspace/src/main/resources
+          volumes:
+          - name: ipe-config
+            configMap:
+              name: om2m-ipe-config
+
+              
+

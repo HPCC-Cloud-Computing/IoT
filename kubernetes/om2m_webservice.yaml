@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: om2m
+spec:
+    replicas: 1
+    selector:
+      app: om2m-middle-ware
+    template:
+      metadata:
+        name: om2m
+        labels:
+          app: om2m-middle-ware
+      spec:
+        containers:
+        - name: om2m-middle-ware
+        image: huanphan/web_service:0.2
+        env:
+        - name: ONEM2M_HOST_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: om2m-middleware
+              key: ONEM2M_HOST_NAME
+        - name: ONEM2M_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: om2m-middleware
+              key: ONEM2M_PORT
+        - name: SELF_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: om2m-middleware
+              key: SELF_PORT
+        - name: SELF_PROTOCOL
+          valueFrom:
+            configMapKeyRef:
+              name: om2m-middleware
+              key: SELF_PROTOCOL
+        - name: INFLUXDB_HOST_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: om2m-middleware
+              key: INFLUXDB_HOST_NAME
+        - name: INFLUXDB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: om2m-middleware
+              key: INFLUXDB_PORT
+        ports:
+        - containerPorts: 9090
+          
+       
