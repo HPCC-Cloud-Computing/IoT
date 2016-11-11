@@ -5,8 +5,8 @@
 ###Create openhab-hpcc-sitemap
 `kubectl create configmap openhab-hpcc-sitemap --from-file hpcc.sitemap`
 ###Create om2m-middleware
-kubectl create configmap om2m-middleware --from-file=om2m-middleware-env
+`kubectl create -f om2m-middleware-env.yaml`
 ###Create om2m-ipe-config
-kubectl create configmap om2m-ipe-config --from-file=ipe_config
+`kubectl create configmap om2m-ipe-config --from-file=ipe_config`
 
 

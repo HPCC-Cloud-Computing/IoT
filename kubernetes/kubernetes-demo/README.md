@@ -1,38 +1,16 @@
-#Start kubenetes in a node
-###Install docker-compose
-[https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+#Start mqtt
+##Start mqtt
+`kubectl create -f mqtt_rc.yaml`
+##Start mqtt_service
+`kubectl create -f mqtt_service.yaml`
 
-###Run command
-```
-docker-compose up
-```
+#Start openhab
+`kubectl create -f openhab.yaml`
 
-###Download kubelet(v1.3.6)
-```
-wget https://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubelet
-```
-
-###Copy kubelet into $HOME_PATH
-```
-sudo cp kubelet /usr/local/sbin
-```
-
-###Run kubelet
-```
-sudo kubelet --api-servers=http://{MASTER_IP}:8080  --address=0.0.0.0 --enable-debugging-handlers=true --config=/etc/kubernetes/manifests --allow-privileged=False --v=2 --cluster-domain=cluster.local
-```
-
-#Download kubectl(v1.3.6)
-```
-curl -Lo kubectl http://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubectl
-```
-
-###Provide permission for kubectl
-```
-sudo chmod +x kubectl
-```
-
-###Testing system
-```
-./kubectl get nodes
-```
+#Start oM2M
+##Start oM2M core
+`kubectl create -f om2m.yaml`
+##Start oM2M service
+`kubectl create -f om2m_service.yaml`
+##Start oM2M webservice (middle-ware)
+`kubectl create -f om2m_webservice.yaml`
