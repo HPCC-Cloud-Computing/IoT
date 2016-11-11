@@ -1,0 +1,5 @@
+{
+	"topic":"test_sample",
+	"brokerAddress":"tcp://localhost:1883",
+	"clientId":"Subscriber"
+}
