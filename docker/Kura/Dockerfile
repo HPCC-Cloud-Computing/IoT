@@ -21,6 +21,10 @@ RUN crontab /etc/cron.d/onboot-cron
 RUN wget http://ftp.daumkakao.com/eclipse/kura/releases/2.0.0/kura_2.0.0_raspberry-pi-2_installer.deb
 RUN dpkg -i kura_2.0.0_raspberry-pi-2_installer.deb
 
+## Nap san bundle fog_to_cloud
+COPY fog_to_cloud.dp /opt/eclipse/kura/kura/packages/
+RUN echo "package_name=file\:/opt/eclipse/kura/kura/packages/fog_to_cloud.dp" >> /opt/eclipse/kura/kura/dpa.properties
+
 ## Trick java serverlet
 RUN [ -f /lib/$(arch)-linux-gnu/libudev.so.0 ] || ln -sf /lib/$(arch)-linux-gnu/libudev.so.1 /lib/$(arch)-linux-gnu/libudev.so.0
 
