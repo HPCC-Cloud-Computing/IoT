@@ -10,7 +10,7 @@ import org.eclipse.om2m.commons.obix.Str;
 import org.eclipse.om2m.commons.obix.Uri;
 import org.eclipse.om2m.commons.obix.io.ObixEncoder;
 
-public class ObixUtil {
+public class CopyOfObixUtil {
 	
 	public final static int TEMPERATURE_SENSOR_TYPE = 1;
 	public final static int AIR_HUMIDITY_SENSOR_TYPE = 2;
@@ -125,18 +125,6 @@ public class ObixUtil {
 		obj.add(new Str("category", category));
 		obj.add(new Int("data", value));
 		obj.add(new Str("unit", unit));
-		return ObixEncoder.toString(obj);
-	}
-	public static String convertSensorDataRep(Monitor.SensorDataItem sensorItem){
-		Obj obj = new Obj();
-//		obj.add(new Str("appId", sensorItem.mAppId));		
-//		obj.add(new Str("ipeId", sensorItem.mIpeId));
-		obj.add(new Str("sensorId", sensorItem.mSensorId));
-		obj.add(new Str("clusterId", sensorItem.mClusterId));
-		obj.add(new Str("category", sensorItem.mCategory));
-		obj.add(new Str("type", sensorItem.mType));
-		obj.add(new Int("data", Integer.valueOf(sensorItem.mData)));
-		obj.add(new Str("unit", sensorItem.mUnit));
 		return ObixEncoder.toString(obj);
 	}
 	public static String getDataSubscriber(){

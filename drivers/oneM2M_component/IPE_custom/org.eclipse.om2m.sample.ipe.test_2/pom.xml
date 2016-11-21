@@ -7,7 +7,7 @@
   	<artifactId>org.eclipse.om2m</artifactId>
   	<version>1.0.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.om2m.sample.ipe.test_2</groupId>
   <name>org.eclipse.om2m :: sample ipe 2</name>
   <packaging>eclipse-plugin</packaging>
+  <groupId>org.eclipse.om2m.sample.ipe.test_2</groupId>
 </project>

@@ -1,0 +1,5 @@
+{
+	"topic":"test_sample_2",
+	"brokerAddress":"tcp://localhost:1883",
+	"clientId":"Cloud_Publisher"
+}
