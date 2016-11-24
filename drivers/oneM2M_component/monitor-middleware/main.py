@@ -225,10 +225,11 @@ def monitor(request):
     start_index = data.find('<obj>')
     end_index = data.find('</obj>')
     raw_data = data[start_index - 1:end_index + len('</obj>') + 1]
-    # data = raw_data.replace('&lt;', '<').replace('&quot;', '"')
-    # logger.info('---> Publish message to CloudAMPQ')
     logger.info(raw_data)
-    # cloudAMPQclient.publish_message(data)
+    if cloudAMPQclient.publish_message(data):
+        logger.info('---> Publish message to CloudAMPQ')
+    else:
+        logger.info('---> Cant connect to AMPQ server')
     logger.info('---> Store data to influxdb')
     # influxdb_client.store_data(raw_data)
     logger.info('---> Export data to prometheus')

@@ -82,14 +82,14 @@ services:
   # - ONEM2M_HOST_NAME=onem2m
   # - INFLUXDB_HOST_NAME=influxsrv
   env_file: docker-env
-  volumes:
-   - "./monitor-middleware:/usr/src/app"
+  # volumes:
+  #  - "./monitor-middleware:/usr/src/app"
   networks:
    - default
   hostname: web-service
   # links:
   #  - "oneM2M:oneM2M"
-  command: "python3 /usr/src/app/main.py"
+  # command: "python3 /usr/src/app/main.py"
 ###################################################################
 networks:    
     default:
