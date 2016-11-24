@@ -1,0 +1,5 @@
+aiohttp
+pika==0.9.14
+rabbitpy
+pamqp
+influxdb
