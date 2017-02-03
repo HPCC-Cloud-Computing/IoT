@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: datagen-simulator
+  namespace: kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        task: datagen
+        app: datagen-simulator
+    spec:
+      containers:
+      - name: datagen-simulator
+        image: huanphan/data_gen_simulator:0.1
+        env:
+        - name: FOG_BROKER_HOST
+          value: rabbitmq-service
+        - name: FOG_BROKER_PORT
+          value: "5672"
+        - name: FOG_BROKER_AUTH
+          value: test:test@123
+
+
