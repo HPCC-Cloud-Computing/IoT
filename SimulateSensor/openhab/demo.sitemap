@@ -1,0 +1,8 @@
+sitemap demo label="Demo House"
+{
+Text item=Sensor0
+Text item=Sensor1
+Text item=Sensor2
+Text item=Sensor3
+Text item=Sensor4
+}
