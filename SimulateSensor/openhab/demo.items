@@ -1,5 +1,0 @@
-Number Sensor0 "Value [%.1f]" {mqtt="<[mqttIn:sensor_0:state:default], >[mqttOut:sensor_0:state:*:default]"}
-Number Sensor1 "Value [%.1f]" {mqtt="<[mqttIn:sensor_1:state:default], >[mqttOut:sensor_1:state:*:default]"}
-Number Sensor2 "Value [%.1f]" {mqtt="<[mqttIn:sensor_2:state:default], >[mqttOut:sensor_2:state:*:default]"}
-Number Sensor3 "Value [%.1f]" {mqtt="<[mqttIn:sensor_3:state:default], >[mqttOut:sensor_3:state:*:default]"}
-Number Sensor4 "Value [%.1f]" {mqtt="<[mqttIn:sensor_4:state:default], >[mqttOut:sensor_4:state:*:default]"}

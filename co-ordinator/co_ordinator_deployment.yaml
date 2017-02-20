@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: co-ordinator
+    namespace: kube-system
+spec:
+    replicas: 1
+    selector:
+      app: co-ordinator
+    template:
+      metadata:
+        name: co-ordinator
+        labels:
+          app: co-ordinator
+      spec:
+        containers:
+        - name: co-ordinator
+          image: huanphan/co_ordinator:0.4
+          ports:
+          - containerPort: 8000
+        restartPolicy: Always
