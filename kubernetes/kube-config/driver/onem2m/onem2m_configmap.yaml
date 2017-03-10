@@ -20,20 +20,22 @@ spec:
           - containerPort: 8080
           volumeMounts:
           - name: onem2m-config
-            mountPath: /usr/src/ipe_config
+            mountPath: /usr/src/ipe_config/config.cfg
+            subPath: config.cfg
           - name: onem2m-items
-            mountPath: /usr/src/ipe_config
+            mountPath: /usr/src/ipe_config/items.cfg
+            subPath: items.cfg
         volumes:
         - name: onem2m-config
           configMap:
             name: onem2m-config
-            items:
-            - key: config.cfg
-              path: config.cfg
+            # items:
+            # - key: config.cfg
+            #   path: config.cfg
         - name: onem2m-items
           configMap:
             name: onem2m-items
-            items:
-            - key: items.cfg
-              path: items.cfg
+            # items:
+            # - key: items.cfg
+            #   path: items.cfg
         restartPolicy: Always
