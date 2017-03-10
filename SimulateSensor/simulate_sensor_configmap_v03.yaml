@@ -11,7 +11,7 @@ spec:
       metadata:
         name: sensor-gen
         labels:
-          app: sensor-gen
+          app: sensor-gendd
       spec:
         containers:
         - name: sensor-gen

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: sensor-gen
+    namespace: kube-system
+spec:
+    replicas: 1
+    selector:
+      app: sensor-gen
+    template:
+      metadata:
+        name: sensor-gen
+        labels:
+          app: sensor-gen
+      spec:
+        containers:
+        - name: sensor-gen
+          image: huanphan/sensor-simulator:test_2
+          volumeMounts:
+          - name: sensor-config
+            mountPath: /SimulateSensor/config
+          env:
+          - name: CO_ORDINATOR_DOMAIN
+            valueFrom:
+              configMapKeyRef:
+                name: co-ordinator-config
+                key: co-ordinator.domain
+        volumes:
+        - name: sensor-config
+          configMap:
+            name: sensor-config
+            items:
+            - key: config.cfg
+              path: config.cfg
+        restartPolicy: Always

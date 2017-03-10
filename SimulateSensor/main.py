@@ -6,10 +6,11 @@ import random
 import time
 import _thread
 import socket
-
+import time
 HOST = '0.0.0.0'
 PORT = 9090
 parent_path = ''
+gb_freq = 0
 
 
 def read_config():
@@ -21,11 +22,18 @@ def read_config():
     f = open(parent_path + 'config/config.cfg', 'r')
     ip_broker = f.readline().replace('\n', '')
     port_broker = f.readline().replace('\n', '')
-    hostname = socket.gethostname()
-    topic_in = hostname + '_' + f.readline().replace('\n', '')
-    topic_out = hostname + '_' + f.readline().replace('\n', '')
+    # hostname = socket.gethostname()
+    hostname = 'sdfd'
+    # topic_in = hostname + '_' + f.readline().replace('\n', '')
+    # topic_out = hostname + '_' + f.readline().replace('\n', '')
+    topic_in = f.readline().replace('\n', '')
+    topic_out = f.readline().replace('\n', '')
     global number_sensor
-    number_sensor = int(f.readline())
+    # number_sensor = int(f.readline().replace('\n', ''))
+    number_sensor = 10
+    global gb_freq
+    # freq = int(f.readline().replace('\n', ''))
+    gb_freq = 40
     f.close()
 
 
@@ -60,10 +68,25 @@ def write_sitemap_file():
 
 
 def send_data(di):
-    while bStop:
-        mqttc.publish(topic_in + str(di), random.randint(-10, 100))
-        time.sleep(random.randint(100, 1000) * MILISECOND)
+    global gb_freq
+    start_time = time.time()
+    while 1:
+        mqttc.publish("onem2m/humidity", random.randint(-10, 100))
+        # mqttc.publish('/in' + str(di), random.randint(-10, 100))
+        # mqttc.publish('/in' + str(di), 'sdff')
+        time.sleep(60/gb_freq)
+        print('{} -- Running'.format(topic_in+ str(di)))
+        next_time = time.time()
+        if next_time - start_time >= 3600:
+            start_time = next_time
+            change_sensor_freq()
 
+def change_sensor_freq():
+    global gb_freq
+    gb_freq += 10
+
+def change_sensor_quantity():
+    pass
 
 def register_sensor_with_ordinator():
     os.system(
@@ -77,8 +100,8 @@ mqttc.connect(ip_broker, int(port_broker))
 bStop = 1
 write_item_file()
 write_sitemap_file()
-co_ordinator_host = os.environ.get('CO_ORDINATOR_DOMAIN')
-register_sensor_with_ordinator()
+# co_ordinator_host = os.environ.get('CO_ORDINATOR_DOMAIN')
+# register_sensor_with_ordinator()
 
 # @asyncio.coroutine
 # def get_sensor_description(request):
@@ -100,6 +123,7 @@ register_sensor_with_ordinator()
 # loop.run_until_complete(init(loop))
 
 try:
+
     for i in range(0, number_sensor):
         _thread.start_new_thread(send_data, (i,))
 except Exception as e:
