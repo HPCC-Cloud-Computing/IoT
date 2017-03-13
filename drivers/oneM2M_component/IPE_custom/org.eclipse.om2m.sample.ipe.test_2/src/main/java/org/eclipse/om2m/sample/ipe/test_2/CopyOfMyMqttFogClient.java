@@ -1,7 +1,4 @@
 package org.eclipse.om2m.sample.ipe.test_2;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -12,12 +9,11 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.eclipse.om2m.sample.ipe.test_2.Monitor.Item;
 
-public class MyMqttFogClient implements MqttCallback{
+public class CopyOfMyMqttFogClient implements MqttCallback{
 
-//	String _fogTopic = null;
-//	String _cloudTopic = null;
+	String _fogTopic = null;
+	String _cloudTopic = null;
 	String _fogBrokerAddress = null;
 	String _cloudBrokerAddress = null;
 	String _fogClientId = null;
@@ -25,14 +21,14 @@ public class MyMqttFogClient implements MqttCallback{
 	MyMqttCloudClient _mqCloudClient = null;
 //	MqttClient _mqCloudClient = null;
 	MqttClient _mqFogClient = null;
-	ArrayList<Item> _items = null;
 
-	public MyMqttFogClient(ArrayList<Item> items, String fogBrokerAddress, String cloudBrokerAddress, String fogClientId, String cloudClientId) {
+	public CopyOfMyMqttFogClient(String fogTopic, String fogBrokerAddress, String cloudTopic, String cloudBrokerAddress, String fogClientId, String cloudClientId) {
+		this._fogTopic = fogTopic;
+		this._cloudTopic = cloudTopic;
 		this._fogBrokerAddress = fogBrokerAddress;
 		this._cloudBrokerAddress = cloudBrokerAddress;
 		this._fogClientId = fogClientId;
 		this._cloudClientId = cloudClientId;
-		this._items = items;		
 		MemoryPersistence persistence = new MemoryPersistence();
 //		try {
 //			this._mqCloudClient = new MqttClient(this._cloudBrokerAddress,
@@ -57,19 +53,15 @@ public class MyMqttFogClient implements MqttCallback{
 					persistence);
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setCleanSession(true);
-			connOpts.setKeepAliveInterval(60);
-			connOpts.setAutomaticReconnect(true);
+			connOpts.setKeepAliveInterval(30);
 			System.out.println("Connecting to fog broker: " + this._fogBrokerAddress);
 			this._mqFogClient.connect(connOpts);
 			System.out.println("Connected");
-			this._mqCloudClient = new MyMqttCloudClient(this._cloudBrokerAddress, this._cloudClientId);
-			this._mqFogClient.setCallback(this);
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
 //		this._mqCloudClient = new MyMqttCloudClient(this._cloudTopic, this._cloudBrokerAddress, "oneM2M publisher");
 	}
-	
 	/**
 	 *  
 	 * @param content
@@ -104,31 +96,18 @@ public class MyMqttFogClient implements MqttCallback{
 	 * @param topic
 	 */
 	public void subscribeToMQ() {
-		System.out.println("SubscribeMQ");
-//		int qos = 2;		
-		String []topics = getAllItemTopic().clone();
-		int []qos = new int[topics.length];
-		for(int q: qos){
-			q = 2;
-		}
-//		MemoryPersistence persistence = new MemoryPersistence();
+		int qos = 2;
+		MemoryPersistence persistence = new MemoryPersistence();
 		try {
-			if(this._mqFogClient.isConnected()){				
-				this._mqFogClient.subscribe(getAllItemTopic(), qos);				
+			if(this._mqFogClient.isConnected()){
+				this._mqFogClient.subscribe(this._fogTopic, qos);
+				this._mqFogClient.setCallback(this);
 			}			
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
 
-	}
-	public String[] getAllItemTopic(){
-		ArrayList<String> topics = new ArrayList<String>();
-		for(Item item: this._items){
-			topics.add(item.topic);
-		}
-		return topics.toArray(new String[topics.size()]);
-			
-	}
+	}	
 	
 	/**
 	 * 
@@ -146,15 +125,13 @@ public class MyMqttFogClient implements MqttCallback{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println(arg0.getCause());
-		arg0.printStackTrace();
 		try {
-//			while(!this._mqFogClient.isConnected()){
+			while(!this._mqFogClient.isConnected()){
 				System.out.println("Connection lost! Reconnection Fog");
 				this._mqFogClient.reconnect();
 				this._mqFogClient.connect();
 				subscribeToMQ();
-//			}			
+			}			
 			System.out.println("Fog connected!");
 //			if(!this._mqCloudClient.isConnected()){
 //				System.out.println("Connection lost! Reconnection Cloud");
@@ -193,11 +170,11 @@ public class MyMqttFogClient implements MqttCallback{
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
 		String strMessage = new String(message.getPayload());
-		System.out.println("Receive message from "+topic);
+		System.out.println(strMessage);
 //		MyMqttFogClient mqCloudClient = new MyMqttFogClient(this._fogTopic, this._fogBrokerAddress, this._cloudTopic, this._cloudBrokerAddress, this._fogClientId, this._cloudClientId);
 //		mqCloudClient.publishToMQ(strMessage);		
-		String objectMessage = ObixUtil.convertItemToDataRep(getItemByTopic(topic), Integer.valueOf(strMessage));
-		this._mqCloudClient.publishToMQ(objectMessage, topic);
+//		this._mqCloudClient = new MyMqttCloudClient(this._cloudTopic, this._cloudBrokerAddress, this._cloudClientId);
+//		this._mqCloudClient.publishToMQ(strMessage);
 //		Gson gson = new Gson();
 //	    ArrayList<LinkedTreeMap> object = (ArrayList<LinkedTreeMap>) gson.fromJson(strMessage, Object.class);
 //	    for (LinkedTreeMap data : object){
@@ -224,15 +201,6 @@ public class MyMqttFogClient implements MqttCallback{
 //	    	
 //	    }
 		
-	}
-	
-	public Item getItemByTopic(String topic){
-		for(Item item : this._items){
-			if (item.topic.equals(topic)){
-				return item;
-			}
-		}
-		return null;
 	}
 	
 }

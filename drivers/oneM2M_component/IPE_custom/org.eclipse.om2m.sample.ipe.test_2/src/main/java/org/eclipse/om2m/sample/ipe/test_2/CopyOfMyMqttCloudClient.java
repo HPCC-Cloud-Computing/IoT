@@ -10,26 +10,24 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class MyMqttCloudClient implements MqttCallback{
-//	String _cloudTopic = null;
-//	String[] topics = null;
+public class CopyOfMyMqttCloudClient implements MqttCallback{
+	String _cloudTopic = null;
 	String _cloudBrokerAddress = null;
 	String _clientId = null;
 	MqttClient _mqCloudClient = null;	
 	
-	public MyMqttCloudClient(String cloudBrokerAddress, String clientId) {
-//		this._cloudTopic = cloudTopic;
+	public CopyOfMyMqttCloudClient(String cloudTopic, String cloudBrokerAddress, String clientId) {
+		this._cloudTopic = cloudTopic;
 		this._cloudBrokerAddress = cloudBrokerAddress;
 		this._clientId = clientId;
 		MemoryPersistence persistence = new MemoryPersistence();
 		try {
 			this._mqCloudClient = new MqttClient(this._cloudBrokerAddress,
-					this._clientId, persistence);
+					"sfdf", persistence);
 			this._mqCloudClient.setCallback(this);
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 //			connOpts.setCleanSession(true);
 			connOpts.setKeepAliveInterval(30);
-			connOpts.setAutomaticReconnect(true);
 			System.out.println("Connecting to cloud broker: " + this._cloudBrokerAddress);
 			this._mqCloudClient.connect(connOpts);
 			System.out.println("Connected");			
@@ -50,10 +48,10 @@ public class MyMqttCloudClient implements MqttCallback{
 	 * @param clientId
 	 * @param cloudTopic
 	 */
-	public void publishToMQ(String content, String cloudTopic) {
+	public void publishToMQ(String content) {
 		int qos = 2;
 		if(this._mqCloudClient.isConnected()){
-			MqttTopic topic = this._mqCloudClient.getTopic(cloudTopic);			
+			MqttTopic topic = this._mqCloudClient.getTopic(this._cloudTopic);			
 			MqttMessage message = new MqttMessage(content.getBytes());
 			message.setQos(qos);
 			MqttDeliveryToken token = null;
@@ -61,7 +59,7 @@ public class MyMqttCloudClient implements MqttCallback{
 	    		// publish message to broker
 				token = topic.publish(message);
 		    	// Wait until the message has been delivered to the broker
-				token.waitForCompletion();
+//				token.waitForCompletion();
 				System.out.println("Publishing message: " + content);
 				Thread.sleep(100);
 //				this._mqCloudClient.disconnect();
@@ -72,7 +70,7 @@ public class MyMqttCloudClient implements MqttCallback{
 		else{
 			try {
 				this._mqCloudClient.reconnect();
-				MqttTopic topic = this._mqCloudClient.getTopic(cloudTopic);
+				MqttTopic topic = this._mqCloudClient.getTopic(this._cloudTopic);
 				System.out.println("Publishing message: " + content);
 				MqttMessage message = new MqttMessage(content.getBytes());
 				message.setQos(qos);
@@ -81,7 +79,8 @@ public class MyMqttCloudClient implements MqttCallback{
 		    		// publish message to broker
 					token = topic.publish(message);
 			    	// Wait until the message has been delivered to the broker
-					token.waitForCompletion();					
+					token.waitForCompletion();
+					this._mqCloudClient.disconnect();
 					Thread.sleep(100);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -91,13 +90,13 @@ public class MyMqttCloudClient implements MqttCallback{
 				e.printStackTrace();
 			}
 		}
-//		try {
-////			this._mqCloudClient.disconnect();
-//			this._mqCloudClient.close();
-//		} catch (MqttException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+//			this._mqCloudClient.disconnect();
+			this._mqCloudClient.close();
+		} catch (MqttException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}
@@ -112,14 +111,11 @@ public class MyMqttCloudClient implements MqttCallback{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println(arg0.getCause());
-		arg0.printStackTrace();
 		try {
-//			while(!this._mqCloudClient.isConnected()){
+			while(!this._mqCloudClient.isConnected()){
 				System.out.println("Connection lost! Reconnection Cloud");
 				this._mqCloudClient.reconnect();
-				this._mqCloudClient.connect();
-//			}	
+			}	
 			System.out.println("Cloud connected!");
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
@@ -131,12 +127,12 @@ public class MyMqttCloudClient implements MqttCallback{
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken arg0) {
-//		 try {
-//				System.out.println("Pub complete" + new String(arg0.getMessage().getPayload()));
-//			} catch (MqttException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}	
+		 try {
+				System.out.println("Pub complete" + new String(arg0.getMessage().getPayload()));
+			} catch (MqttException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
 		
 	}
 
@@ -144,15 +140,6 @@ public class MyMqttCloudClient implements MqttCallback{
 	public void messageArrived(String arg0, MqttMessage arg1) throws Exception {
 		// TODO Auto-generated method stub
 		
-	}
-	public void closeConnection(){
-		try {
-			this._mqCloudClient.close();
-			this._mqCloudClient.disconnect();
-		} catch (MqttException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

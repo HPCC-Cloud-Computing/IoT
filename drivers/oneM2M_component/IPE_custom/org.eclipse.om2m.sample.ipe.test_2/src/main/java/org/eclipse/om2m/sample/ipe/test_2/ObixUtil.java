@@ -139,6 +139,39 @@ public class ObixUtil {
 		obj.add(new Str("unit", sensorItem.mUnit));
 		return ObixEncoder.toString(obj);
 	}
+	
+	public static String convertItemToDataRep(Monitor.Item item, int value){
+		Obj obj = new Obj();
+		obj.add(new Str("itemId", item.itemName));
+		String category = " ";
+		String unit = "";
+		switch(Integer.valueOf(item.itemType)){
+			case TEMPERATURE_SENSOR_TYPE:
+				category = "temperature";
+				unit = "celsius";
+				break;
+			case AIR_HUMIDITY_SENSOR_TYPE:
+				category = "air_humidity";
+				unit = "ratio";
+				break;
+			case LIGHT_SENSOR_TYPE:
+				category = "light";
+				unit = "ISO";
+				break;
+			case HUMAN_APPEARANCE:
+				category = "human_appearance";
+				unit = "s";
+				break;
+		}
+		obj.add(new Str("platformId", "onem2m_1"));
+		obj.add(new Str("platformType", "onem2m"));
+		obj.add(new Str("clusterId", "fog_1"));
+		obj.add(new Str("category", category));
+		obj.add(new Int("data", value));
+		obj.add(new Str("unit", unit));
+		return ObixEncoder.toString(obj);
+	}
+	
 	public static String getDataSubscriber(){
 //		Obj obj = new Obj();
 //		obj.add(new Str("su", "http://0.0.0.0:9090/monitor"));

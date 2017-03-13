@@ -33,8 +33,10 @@ public class Monitor {
 	static String REQUEST_ENTITY = Constants.ADMIN_REQUESTING_ENTITY;
 	static String ipeId = "sample";	
 //	static String MQ_BROKER_CONFIG = "/usr/src/workspace/src/main/resources/mqbroker";
-	static String MQ_BROKER_SUBSCRIBER_CONFIG = "/home/huanpc/oneM2M/ipe_config/mqbrokerSubscriber";
-	static String MQ_BROKER_PUBLISHER_CONFIG = "/home/huanpc/oneM2M/ipe_config/mqbrokerPublisher";
+//	static String MQ_BROKER_SUBSCRIBER_CONFIG = "/home/huanpc/oneM2M/ipe_config/mqbrokersubscriber";
+//	static String MQ_BROKER_PUBLISHER_CONFIG = "/home/huanpc/oneM2M/ipe_config/mqbrokerpublisher";
+	static String MQTT_BROKER_CONFIG =  "/usr/src/ipe_config/config.cfg";
+	static String ITEM_CONFIG =  "/usr/src/ipe_config/items.cfg";
 	public static String[] sensorIdList = {"TEMPERATURE_SENSOR", "AIR_HUMIDITY_SENSOR", "LIGHT_SENSOR"};
 	public static int[] sensorTypeList = {ObixUtil.TEMPERATURE_SENSOR_TYPE, ObixUtil.AIR_HUMIDITY_SENSOR_TYPE, ObixUtil.LIGHT_SENSOR_TYPE};
 	static boolean actuatorValue = false;
@@ -48,13 +50,14 @@ public class Monitor {
 	public ArrayList<String> sensorClusterIdByConfig = new ArrayList<String>();
 	String _brokerFogAddress = null;
 	String _brokerCloudAddress = null;
-	String _fogTopic = null;
+//	String _fogTopic = null;
 	String _cloudTopic = null;
 	String _fogClientId = null;
 	String _cloudClientId = null;	
 	public ArrayList<String> sersorIdExistedList = new ArrayList<String>();
 	public HashMap<String, Integer> sersorIdExistedMap = new HashMap<>();
 	public MQBrokerSubscriber _subscriber = null;
+	ArrayList<Item> _items = new ArrayList<Item>();
 	
 	public Monitor(CseService cseService) {
 		CSE = cseService;
@@ -63,60 +66,25 @@ public class Monitor {
 	public void start() {
 		System.out.println("Starting Monitor");				
 		readConfigFromFile();		
-		this._subscriber = new MQBrokerSubscriber(this._cloudTopic, this._brokerCloudAddress, this._fogTopic, this._brokerFogAddress, this._fogClientId, this._cloudClientId);
+		this._subscriber = new MQBrokerSubscriber(this._items, this._brokerCloudAddress,this._brokerFogAddress, this._fogClientId, this._cloudClientId);
 		this._subscriber.start();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void stop() {
 		if (this._subscriber != null && this._subscriber.isAlive()) {
 			this._subscriber.stop();
 		}
 	}
 
-//	public void startWithDelayTime(final long timeDelay) {
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				long startTime = System.currentTimeMillis();
-//				long currentTime = System.currentTimeMillis();
-//				while ((currentTime - startTime) != timeDelay) {
-//					currentTime = System.currentTimeMillis();
-//				}
-//				start();
-//			}
-//		}).start();
-//	}
-//
-//	public void stopWithDelayTime(final long timeDelay) {
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				long startTime = System.currentTimeMillis();
-//				long currentTime = System.currentTimeMillis();
-//				while ((currentTime - startTime) != timeDelay) {
-//					currentTime = System.currentTimeMillis();
-//				}
-//				stop();
-//			}
-//		}).start();
-//	}
-
 	public void setTimeResponse(long timeDelay) {
 		if (timeResponse > 1000)
 			timeResponse = timeDelay;
 	}
 
-//	public void createListSensorResources() {		
-//		System.out.println("Create list sensors");
-//		for(int i = 0; i < sensorIdListByConfig.size(); i++){
-//			createSensorResources(sensorIdListByConfig.get(i), sensorTypeListByConfig.get(i));
-//		}
-//	}
 	public void readConfigFromFile(){			
-		// Get FOG config from Environment variable		
-		String filePath = Monitor.MQ_BROKER_SUBSCRIBER_CONFIG;
+		// Get FOG configuration 		
+		String filePath = Monitor.MQTT_BROKER_CONFIG;
 		String dataConfig = "";
         try {
             try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -136,12 +104,11 @@ public class Monitor {
         if(!dataConfig.equals("")){
         	Gson gson = new Gson();
             LinkedTreeMap object = (LinkedTreeMap) gson.fromJson(dataConfig, Object.class);
-        	this._brokerFogAddress = (String) object.get("brokerAddress");
-        	this._fogTopic = (String) object.get("topic");
+        	this._brokerFogAddress = (String) object.get("inbound_broker_addr");
+//        	this._fogTopic = (String) object.get("topic");
         	this._fogClientId = (String) object.get("clientId");
         }
-        // Get Cloud config
-        filePath = Monitor.MQ_BROKER_PUBLISHER_CONFIG;
+        // Get Cloud configuration
         dataConfig = "";
         try {
             try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -161,33 +128,63 @@ public class Monitor {
         if(!dataConfig.equals("")){
         	Gson gson = new Gson();
             LinkedTreeMap object = (LinkedTreeMap) gson.fromJson(dataConfig, Object.class);
-        	this._brokerCloudAddress = (String) object.get("brokerAddress");
-        	this._cloudTopic = (String) object.get("topic");
+        	this._brokerCloudAddress = (String) object.get("outbound_broker_addr");
+//        	this._cloudTopic = (String) object.get("topic");
         	this._cloudClientId = (String) object.get("clientId");
         }
-        
+        // Get item's configuration
+        filePath = Monitor.ITEM_CONFIG;
+        dataConfig = "";
+        try {
+            try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+
+                while (line != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                    line = br.readLine();
+                }
+                dataConfig = sb.toString();
+            }
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+        if(!dataConfig.equals("")){
+        	Gson gson = new Gson();
+        	ArrayList<LinkedTreeMap> object = (ArrayList<LinkedTreeMap>) gson.fromJson(dataConfig, Object.class);
+        	for (LinkedTreeMap data : object){
+        		Item item = new Item();
+        		item.itemName = (String) data.get("item_name");
+        		item.itemType = (String) data.get("item_type");
+        		item.topic = ((String) data.get("topic"));
+        		this._items.add(item);
+        	}		    
+        }
 	}
 	private class MQBrokerSubscriber extends Thread {
 				
 		private boolean mRunning = true;
-		String mCloudTopic = null;
-		String mFogTopic = null;
+//		String mCloudTopic = null;
+//		String mFogTopic = null;
+		ArrayList<Item> mItems = null;
 		String mFogBrokerAddress = null;
 		String mCloudBrokerAddress = null;
 		String mFogClientId = null;
 		String mCloudClientId = null;
 		
-		public MQBrokerSubscriber(String cloudTopic, String cloudBrokerAddress, String fogTopic, String fogBrokerAddress, String fogClientId, String cloudClientId){
+		public MQBrokerSubscriber(ArrayList<Item> items, String cloudBrokerAddress, String fogBrokerAddress, String fogClientId, String cloudClientId){
 			this.mCloudBrokerAddress = cloudBrokerAddress;
-			this.mCloudTopic = cloudTopic;
+//			this.mCloudTopic = cloudTopic;
 			this.mFogBrokerAddress = fogBrokerAddress;
-			this.mFogTopic = fogTopic;
+//			this.mFogTopic = fogTopic;
+			this.mItems = items;
 			this.mFogClientId = fogClientId;
 			this.mCloudClientId = cloudClientId;
 		}
 		@Override
 		public void run() {						
-			MyMqttFogClient client = new MyMqttFogClient(this.mFogTopic, this.mFogBrokerAddress, this.mCloudTopic, this.mCloudBrokerAddress, this.mFogClientId, this.mCloudClientId);
+			MyMqttFogClient client = new MyMqttFogClient(this.mItems, this.mFogBrokerAddress, this.mCloudBrokerAddress, this.mFogClientId, this.mCloudClientId);
 			client.subscribeToMQ();
 //			MqttCallback callBack = new MqttCallback() {
 //				
@@ -416,6 +413,12 @@ public class Monitor {
 	        text[i] = characters.charAt(rng.nextInt(characters.length()));
 	    }
 	    return new String(text);
+	}
+	
+	public class Item{
+		String itemName;
+		String itemType;
+		String topic; 
 	}
 
 }
