@@ -8,7 +8,7 @@ time_min = '2017-03-03 11:00:00'
 time_max = '2017-03-03 17:00:00'
 time_grouped = '1m'
 time_step = 5
-platform_pod_name = 'openhab-dtvsr'
+onem2m = 'openhab-dtvsr'
 sensor_pod_name = 'sensor-gen-st0pn'
 
 def cpu_query(_pod_name):
@@ -126,14 +126,14 @@ data = dict()
 # get cpu metric
 data['platform'] = dict()
 data['sensor'] = dict()
-data['platform']['cpu'] = query_metric(_query=cpu_query(platform_pod_name))
+data['platform']['cpu'] = query_metric(_query=cpu_query(onem2m))
 data['sensor']['cpu'] = query_metric(_query=cpu_query(sensor_pod_name))
 # print(data['cpu'])
 # # get memory metric
-data['platform']['memory'] = query_metric(_query=mem_query(platform_pod_name))
+data['platform']['memory'] = query_metric(_query=mem_query(onem2m))
 data['sensor']['memory'] = query_metric(_query=mem_query(sensor_pod_name))
 # get network metric
-data['platform']['network'] = query_metric(_query=net_query(platform_pod_name))
+data['platform']['network'] = query_metric(_query=net_query(onem2m))
 data['sensor']['network'] = query_metric(_query=net_query(sensor_pod_name))
 # get data rate
 data['data_rate'] = query_metric(_query=data_rate_query())

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data>
+	<timestamp>13431345</timestamp>
+	<endpoint>sensor_temperature_1</endpoint>
+	<metric_name>temperature</metric_name>
+	<type>gauge</type>
+	<data_type>float</data_type>
+	<unit>celsius</unit>
+	<polling_frequency>10</polling_frequency>
+	<value>30</value>
+	<category>data_sensing</category>
+</data>
+
+
+<Data>
+	<Timestamp></Timestamp>
+	<SensingResource>
+		<ResourceId></ResourceId>
+		<ResourceType></ResourceType>		
+		<Location></Location>
+		<Status></Status>
+		<Description></Description>
+		<MetaData>
+			<DataType></DataType>
+			<Unit></Unit>
+			<Rate></Rate>
+			<Value></Value>
+		</MetaData>
+	</SensingResource>
+	<VirtualIoTResource>
+		<Capability>
+			<ResourceId></ResourceId>
+			<Type></Type>
+			<Description></Description>
+			<ReferenceAPI></ReferenceAPI>
+			<Extra>
+				<Sensor>
+					<ResourceId></ResourceId>
+				</Sensor>
+			</Extra>			
+		</Capability>		
+		<Connectivity>
+			<Route></Route>
+			<Protocol></Protocol>
+		</Connectivity>
+		<ResourceMonitored>
+			<CPU>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</CPU>
+			<RAM>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</RAM>
+			<MEMORY>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</MEMORY>
+			<NETWORK>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</NETWORK>
+		</ResourceMonitored>
+	</VirtualIoTResource>
+	<SoftwareDefinedGateway>
+		<Device>
+			<DeviceId></DeviceId>
+			<Type></Type>
+			<AccessPoint></AccessPoint>
+			<NetworkProtocol></NetworkProtocol>
+			<Status></Status>
+			<Quantity></Quantity>
+			<Description></Description>
+		</Device>
+		<ResourceMonitored>
+			<CPU>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</CPU>
+			<RAM>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</RAM>
+			<MEMORY>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</MEMORY>
+			<NETWORK>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</NETWORK>
+			<STRORAGE>
+				<Endpoint></Endpoint>
+				<Value></Value>
+			</STRORAGE>
+		</ResourceMonitored>
+	</SoftwareDefinedGateway>
+	<CloudServiceResource>
+		<CloudService>
+			<ResourceId></ResourceId>
+			<Type></Type>
+			<Description></Description>
+			<ReferenceAPI></ReferenceAPI>
+			<Connectivity>
+				<Route></Route>
+				<Protocol></Protocol>
+			</Connectivity>
+			<ResourceMonitored>
+				<CPU>
+					<Endpoint></Endpoint>
+					<Value></Value>
+				</CPU>
+				<RAM>
+					<Endpoint></Endpoint>
+					<Value></Value>
+				</RAM>
+				<MEMORY>
+					<Endpoint></Endpoint>
+					<Value></Value>
+				</MEMORY>
+				<NETWORK>
+					<Endpoint></Endpoint>
+					<Value></Value>
+				</NETWORK>
+				<STRORAGE>
+					<Endpoint></Endpoint>
+					<Value></Value>
+				</STRORAGE>
+			</ResourceMonitored>
+		</CloudService>
+		<CloudProvider>
+			<Type></Type>
+			<Provider></Provider>
+			<Location></Location>
+			<Capability>
+				<CPU></CPU>
+				<RAM></RAM>
+				<MEMORY></MEMORY>
+				<NETWORK></NETWORK>
+				<STRORAGE></STRORAGE>
+			</Capability>
+		</CloudProvider>		
+	</CloudServiceResource>
+</Data>
+
+<!-- Endpoint (Location to collect metrics from) -->
+<!-- Name of metric -->
+<!-- Type (Counter, Gauge, ...) -->
+<!-- Data Type (int, float) -->
+<!-- Units (kbps, seconds, count) -->
+<!-- Polling Frequency -->
+<!-- Value -->
+<!-- Category (resource, data sensing) -->

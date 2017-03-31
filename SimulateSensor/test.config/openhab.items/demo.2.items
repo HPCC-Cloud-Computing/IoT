@@ -1,0 +1,5 @@
+String openhab_pf_6 "[%s]" {mqtt="<[mqttIn:openhab_pf_6/temperature:state:default], >[mqttOut:openhab_pf_6/temperature:state:*:default]"}
+String openhab_pf_7 "[%s]" {mqtt="<[mqttIn:openhab_pf_7/temperature:state:default], >[mqttOut:openhab_pf_7/temperature:state:*:default]"}
+String openhab_pf_8 "[%s]" {mqtt="<[mqttIn:openhab_pf_8/temperature:state:default], >[mqttOut:openhab_pf_8/temperature:state:*:default]"}
+String openhab_pf_9 "[%s]" {mqtt="<[mqttIn:openhab_pf_9/temperature:state:default], >[mqttOut:openhab_pf_9/temperature:state:*:default]"}
+String openhab_pf_10 "[%s]" {mqtt="<[mqttIn:openhab_pf_10/temperature:state:default], >[mqttOut:openhab_pf_10/temperature:state:*:default]"}

@@ -1,138 +1,114 @@
 # -*- coding: utf-8 -*-
 import os
-
+import sys, getopt
 import paho.mqtt.client as mqtt
 import random
 import time
 import _thread
 import socket
 import time
+
 HOST = '0.0.0.0'
 PORT = 9090
-parent_path = ''
-gb_freq = 0
-
-
-def read_config():
-    global ip_broker
-    global port_broker
-    global topic_in
-    global topic_out
-    global hostname
-    f = open(parent_path + 'config/config.cfg', 'r')
-    ip_broker = f.readline().replace('\n', '')
-    port_broker = f.readline().replace('\n', '')
-    # hostname = socket.gethostname()
-    hostname = 'sdfd'
-    # topic_in = hostname + '_' + f.readline().replace('\n', '')
-    # topic_out = hostname + '_' + f.readline().replace('\n', '')
-    topic_in = f.readline().replace('\n', '')
-    topic_out = f.readline().replace('\n', '')
-    global number_sensor
-    # number_sensor = int(f.readline().replace('\n', ''))
-    number_sensor = 10
-    global gb_freq
-    # freq = int(f.readline().replace('\n', ''))
-    gb_freq = 40
-    f.close()
-
-
-# Number    MyTemperature  "Temperature [%.1f °C]"         {mqtt="<[mos:/temp:state:default], >[mos:/out:state:*:default]"}
-def write_item_file():
-    try:
-        f = open(parent_path + 'openhab/demo.items', 'w')
-        for i in range(0, number_sensor):
-            f.write('Number {}_sensor_{}'.format(hostname, str(i)) + ' "Value [%.1f]" {mqtt="<[mqttIn:' + topic_in + str(
-                i) + ':state:default], >[mqttOut:' + topic_out + str(i) + ':state:*:default]"}' + '\n')
-    except IOError:
-        print('Can not open file item\n')
-    else:
-        f.close()
-
-
-# sitemap demo label="Demo House"
-# {
-# 	Text item=MyTemperature
-# }
-def write_sitemap_file():
-    try:
-        f = open(parent_path + 'openhab/demo.sitemap', 'w')
-        f.write('sitemap demo label="Demo House"\n{' + '\n')
-        for i in range(0, number_sensor):
-            f.write('Text item={}_sensor_{}'.format(hostname, str(i)) + '\n')
-        f.writelines('}')
-    except IOError:
-        print('Can not open file sitemap\n')
-    else:
-        f.close()
-
-
-def send_data(di):
-    global gb_freq
-    start_time = time.time()
-    while 1:
-        mqttc.publish("onem2m/humidity", random.randint(-10, 100))
-        # mqttc.publish('/in' + str(di), random.randint(-10, 100))
-        # mqttc.publish('/in' + str(di), 'sdff')
-        time.sleep(60/gb_freq)
-        print('{} -- Running'.format(topic_in+ str(di)))
-        next_time = time.time()
-        if next_time - start_time >= 3600:
-            start_time = next_time
-            change_sensor_freq()
-
-def change_sensor_freq():
-    global gb_freq
-    gb_freq += 10
-
-def change_sensor_quantity():
-    pass
-
-def register_sensor_with_ordinator():
-    os.system(
-        'sensor_detail="$(/bin/hostname -i),$(hostname)" && curl -F "sensor_detail=${sensor_detail}" -F "defined_file=@openhab/demo.items"  ${CO_ORDINATOR_DOMAIN}/sensor/define')
-
-
+# gb_freq = 0
+CONFIG_PATH = 'config/config.cfg'
+ITEMS_PATH = 'config/items.cfg'
 MILISECOND = 0.001
-read_config()
-mqttc = mqtt.Client('python_pub')
-mqttc.connect(ip_broker, int(port_broker))
-bStop = 1
-write_item_file()
-write_sitemap_file()
-# co_ordinator_host = os.environ.get('CO_ORDINATOR_DOMAIN')
-# register_sensor_with_ordinator()
 
-# @asyncio.coroutine
-# def get_sensor_description(request):
-#     lines = [line.rstrip('\n') for line in open(parent_path + 'openhab/demo.items')]
-#     content = '\n'.join(lines)
-#     return web.Response(status=200, body=content.encode('utf-8'))
-#
-# @asyncio.coroutine
-# def init(loop):
-#     app = web.Application(loop=loop)
-#     # Get resource description
-#     app.router.add_route('GET', '/sensor/description', get_sensor_description)
-#
-#     srv = yield from loop.create_server(app.make_handler(), HOST, PORT)
-#     print("Server started at " + HOST + ":" + str(PORT))
-#     return srv
-#
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(init(loop))
+class Item(object):
+    def __init__(self, string):
+        self.convert_string_to_item(string)
 
-try:
+    def convert_string_to_item(self, string):
+        # sensor_name, topic_in,topic_out,frequent
+        tokens = str(string).split(',')
+        self._platform_type = tokens[0]
+        self._sensor_name = tokens[1]
+        self._topic = tokens[2]
+        self._frequent = int(tokens[3])
 
-    for i in range(0, number_sensor):
-        _thread.start_new_thread(send_data, (i,))
-except Exception as e:
-    print('Can not create thread\n')
-#
-# try:
-#     loop.run_forever()
-# except KeyboardInterrupt:
-#     pass
+    def get_sensor_name(self):
+        return self._sensor_name
 
-while bStop:
-    time.sleep(1)
+    def get_topic(self):
+        return self._topic
+
+    def get_frequent(self):
+        return self._frequent
+
+    def increase_frequent(self):
+        self._frequent += 10
+        print(self._frequent)
+        return self._frequent
+
+
+class SimulatorEngine(object):
+    _bStop = 1
+
+    def __init__(self):
+        # read config
+        items = [line.rstrip('\n') for line in open(CONFIG_PATH)]
+        self._ip_broker = items[0]
+        self._port_broker = items[1]
+        self._client_name = items[2]
+        items = [Item(string=line.rstrip('\n')) for line in open(ITEMS_PATH)]
+        self._items = items
+        self._mqttc = mqtt.Client(self._client_name)
+        self._mqttc.connect(self._ip_broker, int(self._port_broker))
+
+        # hostname = socket.gethostname()
+
+    def send_data(self, item, data=''):
+        start_time = time.time()
+        time_data_change_period = random.randint(60, 3600)
+        time_data_change = time.time()
+        data_value = random.randint(0, 100)
+        print('Change data value. Period {} Value {}'.format(time_data_change_period, data_value))
+        while 1:
+            next_time = time.time()
+            if next_time - time_data_change >= time_data_change_period:
+                time_data_change = next_time
+                time_data_change_period = random.randint(60, 3600)
+                data_value = random.randint(0, 100)
+                print('Change data value. Period {} Value {}'.format(time_data_change_period, data_value))
+
+            if item._platform_type == 'onem2m':
+                message = data_value
+            else:
+                message = '''
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <obj>
+                    <int val="{value}" name="data"/>
+                </obj>
+                '''.format(value=data_value)
+
+            self._mqttc.publish(topic=item.get_topic(), payload=message)
+            time.sleep(60 / item.get_frequent())
+            print('Topic {} -- Data {}'.format(item.get_topic(), data))
+            if next_time - start_time >= 3600:
+                start_time = next_time
+                item.increase_frequent()
+
+    def register_sensor_with_ordinator(self):
+        os.system(
+            'sensor_detail="$(/bin/hostname -i),$(hostname)" && curl -F "sensor_detail=${sensor_detail}" -F "defined_file=@openhab/demo.items"  ${CO_ORDINATOR_DOMAIN}/sensor/define')
+
+    def execute(self):
+        try:
+            for item in self._items:
+                _thread.start_new_thread(self.send_data, (item,))
+        except Exception as e:
+            print(e)
+
+        while self._bStop:
+            time.sleep(1)
+
+
+def main(argv):
+    engine = SimulatorEngine()
+    engine.execute()
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
+

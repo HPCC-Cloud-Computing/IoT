@@ -1,0 +1,16 @@
+- hosts: master
+  tasks:   
+   - name: Run master node
+     shell: /home/huanpc/kube-deploy/docker-multinode/master.sh
+
+- hosts: worker
+  tasks:   
+   - name: Run master node
+     shell: /home/huanpc/kube-deploy/docker-multinode/worker.sh
+
+- hosts: master
+  tasks:   
+   - name: Label for node
+     shell: kubectl label nodes 128.199.242.5 fog-node=master && kubectl label nodes 128.199.91.17 fog-node=worker_1 && kubectl label nodes 139.59.98.138 fog-node=worker_2 && kubectl label nodes 139.59.98.157 fog-node=worker_3
+     
+

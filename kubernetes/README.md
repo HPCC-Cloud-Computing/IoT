@@ -62,6 +62,11 @@ $ sudo ./worker.sh
 
 ## Assign label for node
 ```
+$ kubectl label nodes <node-name> <label-key>=<label-value>
+
+```
+## Config cluster name
+```
 $ kubectl config set-cluster fog-cluster --server=http://[MASTER_IP]:8080
 $ kubectl config set-context fog-system --cluster=fog-cluster
 $ kubectl config use-context fog-system

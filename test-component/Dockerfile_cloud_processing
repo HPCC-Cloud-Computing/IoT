@@ -1,0 +1,12 @@
+FROM python:3.4
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY requirements.txt /usr/src/app/
+RUN pip install -r requirements.txt
+
+COPY cloud_data_processing.py /usr/src/app
+COPY items.cfg /usr/src/app
+
+CMD [ "python3", "./cloud_data_processing.py" ]

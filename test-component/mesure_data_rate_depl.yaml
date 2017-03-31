@@ -13,5 +13,16 @@ spec:
     spec:
       containers:
       - name: measure-data-rate
-        image: huanphan/measure-data-rate:0.1
+        image: huanphan/measure-data-rate:0.3
+        volumeMounts:
+        - name: measure-items
+          mountPath: /usr/src/app/items.cfg
+          subPath: items.cfg
+      volumes:
+      - name: measure-items
+        configMap:
+          name: measure-items
+          items:
+          - key: items.cfg
+            path: items.cfg
 
