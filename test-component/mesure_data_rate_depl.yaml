@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: measure-data-rate
-        image: huanphan/measure-data-rate:0.3
+        image: huanphan/measure-data-rate:test_case_deplay
         volumeMounts:
         - name: measure-items
           mountPath: /usr/src/app/items.cfg

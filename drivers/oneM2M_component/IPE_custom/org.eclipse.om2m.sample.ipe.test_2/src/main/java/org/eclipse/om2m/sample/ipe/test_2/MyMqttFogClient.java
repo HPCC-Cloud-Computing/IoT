@@ -14,6 +14,9 @@ import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.eclipse.om2m.sample.ipe.test_2.Monitor.Item;
 
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+
 public class MyMqttFogClient implements MqttCallback{
 
 //	String _fogTopic = null;
@@ -59,6 +62,7 @@ public class MyMqttFogClient implements MqttCallback{
 			connOpts.setCleanSession(true);
 			connOpts.setKeepAliveInterval(60);
 			connOpts.setAutomaticReconnect(true);
+			connOpts.setConnectionTimeout(0);
 			System.out.println("Connecting to fog broker: " + this._fogBrokerAddress);
 			this._mqFogClient.connect(connOpts);
 			System.out.println("Connected");
@@ -149,12 +153,12 @@ public class MyMqttFogClient implements MqttCallback{
 		System.out.println(arg0.getCause());
 		arg0.printStackTrace();
 		try {
-//			while(!this._mqFogClient.isConnected()){
+			while(!this._mqFogClient.isConnected()){
 				System.out.println("Connection lost! Reconnection Fog");
 				this._mqFogClient.reconnect();
 				this._mqFogClient.connect();
 				subscribeToMQ();
-//			}			
+			}			
 			System.out.println("Fog connected!");
 //			if(!this._mqCloudClient.isConnected()){
 //				System.out.println("Connection lost! Reconnection Cloud");
@@ -192,11 +196,18 @@ public class MyMqttFogClient implements MqttCallback{
 	 */
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
+		long timeReceive = System.currentTimeMillis();
 		String strMessage = new String(message.getPayload());
 		System.out.println("Receive message from "+topic);
 //		MyMqttFogClient mqCloudClient = new MyMqttFogClient(this._fogTopic, this._fogBrokerAddress, this._cloudTopic, this._cloudBrokerAddress, this._fogClientId, this._cloudClientId);
 //		mqCloudClient.publishToMQ(strMessage);		
-		String objectMessage = ObixUtil.convertItemToDataRep(getItemByTopic(topic), Integer.valueOf(strMessage));
+		Gson gson = new Gson();
+        LinkedTreeMap object = (LinkedTreeMap) gson.fromJson(strMessage, Object.class);
+        String timestampSensor = (String) object.get("timestamp");
+        String value = (String) object.get("value");
+        String numOfSensor = (String) object.get("num_of_sensor");
+//        System.out.println(timestampSensor+"  "+value);
+		String objectMessage = ObixUtil.convertItemToDataRep(getItemByTopic(topic), Integer.valueOf(value), timestampSensor, numOfSensor, timeReceive);
 		this._mqCloudClient.publishToMQ(objectMessage, topic);
 //		Gson gson = new Gson();
 //	    ArrayList<LinkedTreeMap> object = (ArrayList<LinkedTreeMap>) gson.fromJson(strMessage, Object.class);
@@ -234,5 +245,6 @@ public class MyMqttFogClient implements MqttCallback{
 		}
 		return null;
 	}
+	
 	
 }

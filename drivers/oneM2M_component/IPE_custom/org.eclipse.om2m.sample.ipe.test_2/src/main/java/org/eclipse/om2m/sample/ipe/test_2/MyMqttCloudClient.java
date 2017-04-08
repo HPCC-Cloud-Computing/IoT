@@ -28,6 +28,7 @@ public class MyMqttCloudClient implements MqttCallback{
 			this._mqCloudClient.setCallback(this);
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 //			connOpts.setCleanSession(true);
+			connOpts.setConnectionTimeout(0);
 			connOpts.setKeepAliveInterval(30);
 			connOpts.setAutomaticReconnect(true);
 			System.out.println("Connecting to cloud broker: " + this._cloudBrokerAddress);

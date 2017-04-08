@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DataModel>
+	<Id>32534534534</Id>
+	<Timestamp>149342332</Timestamp>
+	<Metric>
+		<MetricName>Memory usage</MetricName>		
+		<Units>
+			<Data>Bytes</Data>
+		</Units>
+		<MetricType>Gauge</MetricType>
+		<DataPoint>
+			<DataType>Integer</DataType>
+			<DataFrequency>10</DataFrequency>
+			<Value>102400</Value>
+		</DataPoint>
+	</Metric>	
+	<Resource>
+		<ResourceId>openhab_542425</ResourceId>
+		<Endpoint>http://192.168.30.44:8300/metrics/ram_usage</Endpoint>
+		<State>active</State>
+		<Description>IoT Platform memory usage</Description>
+		<PlatformName>OpenHAB_IoT_LAB_1</PlatformName>
+		<PlatformType>OpenHAB</PlatformType>
+		<Version>0.8</Version>
+		<Regex>mem_usage: ([0-9]+)%</Regex>
+	</Resource>
+</DataModel>
+
+<DataModel>
+	<Id>143543547</Id>
+	<Timestamp>1493425460</Timestamp>
+	<Metric>
+		<MetricName>AirHumidity</MetricName>		
+		<Units>
+			<Statistic>Percentage</Statistic>
+		</Units>
+		<MetricType>Gauge</MetricType>
+		<DataPoint>
+			<DataType>Float</DataType>
+			<DataFrequency>1</DataFrequency>
+			<Value>0.5</Value>
+		</DataPoint>
+	</Metric>	
+	<Resource>
+		<ResourceId>sensor_air_mesurement_3243</ResourceId>
+		<Endpoint>http://192.168.55.43:8300/device/values</Endpoint>
+		<Status>active</Status>
+		<Description>Air humidity mesurement</Description>
+		<SensorType>Air Humidiry</SensorType>
+		<SensorLocation>Top of building</SensorLocation>
+		<Manufacturer>Panasonic</Manufacturer>
+		<PlatformListener>onem2m_34234</PlatformListener>
+		<Regex>value: ([0-9]+)%</Regex>
+	</Resource>
+</DataModel>
+
+<DataModel>
+	<Id>143543545</Id>
+	<Timestamp>149342354</Timestamp>
+	<Metric>
+		<MetricName>CPU usage rate</MetricName>		
+		<Units>
+			<Statistic>Percentage</Statistic>
+		</Units>
+		<MetricType>Gauge</MetricType>
+		<DataPoint>
+			<DataType>Float</DataType>
+			<DataFrequency>10</DataFrequency>
+			<Value>0.8</Value>
+		</DataPoint>
+	</Metric>	
+	<Resource>
+		<ResourceId>openhab_542425</ResourceId>
+		<Endpoint>http://192.168.30.44:8300/metrics/cpu_usage_rate</Endpoint>
+		<Status>active</Status>
+		<Description>IoT Platform cpu usage rate</Description>
+		<PlatformType>OpenHAB</PlatformType>
+		<Version>0.8</Version>
+		<Regex>cpu_usage: ([0-9]+)%</Regex>
+	</Resource>
+</DataModel>

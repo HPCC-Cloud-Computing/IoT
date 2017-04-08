@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<obj>
+	<str val="onem2m_pf_2" name="itemId"/>
+	<str val="onem2m_1" name="platformId"/>
+	<str val="onem2m" name="platformType"/>
+	<str val="fog_1" name="clusterId"/>
+	<str val="temperature" name="category"/>
+	<int val="86" name="data"/>
+	<str val="celsius" name="unit"/>
+</obj>
+
+# CPU resource
+

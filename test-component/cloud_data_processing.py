@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 db_client = InfluxDBClient('monitoring-influxdb', 8086, 'root', 'root', 'k8s')
 CONFIG_PATH = ''
 ITEM_PATH = 'items.cfg'
+import time
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -23,15 +24,34 @@ def on_message(client, userdata, msg):
     # print(payload)
     root = ET.fromstring(payload)
     data = int(root.find('./*[@name="data"]').attrib['val'])
+    timestamp_sensor = float(root.find('./*[@name="timestamp_sensor"]').attrib['val'])
+    timestamp_platform = float(root.find('./*[@name="timestamp_platform"]').attrib['val'])
+    time_platform_process = float(root.find('./*[@name="time_platform_process"]').attrib['val'])
+    num_of_sensor = str(root.find('./*[@name="num_of_sensor"]').attrib['val'])
+    timenow = time.time() + 1.76949811
+    print(timestamp_sensor)
+    print(timestamp_platform)
+    round_trip_1 = timestamp_platform - timestamp_sensor
+    print(round_trip_1)
+    round_trip_2 = timenow - timestamp_platform
+    print(round_trip_2)
+    round_trip_3 = round_trip_1 + round_trip_2
     json_body = [
         {
             "measurement": "data_collect_rate",
             "tags": {
-                "topic_id": str(msg.topic)
+                "topic_id": str(msg.topic),
+                "num_of_sensor": num_of_sensor
             },
             "fields": {
                 "num_of_message": 1,
-                "value": data
+                "value": data,
+                "round_trip_1": round_trip_1,
+                "round_trip_2": round_trip_2,
+                "round_trip_3": round_trip_3,
+                "time_platform_process": time_platform_process
+                # "time_send_cloud": time.time()
+                #
             }
         }
     ]
@@ -42,6 +62,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 # client.connect("188.166.238.158", 30146, 60)
 client.connect("mqtt-service", 1883, 60)
+# client.connect("localhost", 1883, 60)
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
@@ -58,7 +79,8 @@ client.loop_forever()
 # 2017-03-27T16:48:10.756238542Z     <str val="temperature" name="category"/>
 # 2017-03-27T16:48:10.756287257Z     <int val="86" name="data"/>
 # 2017-03-27T16:48:10.756294421Z     <str val="celsius" name="unit"/>
-# 2017-03-27T16:48:10.756300242Z </obj>
+# 2017-03-27T16:48:10.756300242Z     <int val="423423423" name="timestamp_platform"/>
+# 2017-03-27T16:48:10.756300242Z     <int val="423423423" name="timestamp_sensor"/>
 
 # <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 # 2017-03-27T16:52:26.592544615Z                 <obj>

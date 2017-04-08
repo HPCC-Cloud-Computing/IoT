@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: onem2m-3
+    namespace: kube-system
+spec:
+    replicas: 1
+    selector:
+      app: onem2m-3
+    template:
+      metadata:
+        name: onem2m-3
+        labels:
+          app: onem2m-3
+      spec:
+        containers:
+        - name: onem2m-3
+          image: huanphan/onem2m:1.0
+          ports:
+          - containerPort: 8080
+          volumeMounts:
+          - name: onem2m-config
+            mountPath: /usr/src/ipe_config/config.cfg
+            subPath: config.cfg
+          - name: onem2m-items
+            mountPath: /usr/src/ipe_config/items.cfg
+            subPath: items.cfg
+        volumes:
+        - name: onem2m-config
+          configMap:
+            name: onem2m-config-3
+            items:
+            - key: config.3.cfg
+              path: config.cfg
+        - name: onem2m-items
+          configMap:
+            name: onem2m-items-3
+            items:
+            - key: items.3.cfg
+              path: items.cfg
+        restartPolicy: Always
+#        nodeSelector:
+#          fog-node: worker_3

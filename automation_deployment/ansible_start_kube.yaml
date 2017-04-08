@@ -2,9 +2,13 @@
   tasks:   
    - name: Run master node
      shell: /home/huanpc/kube-deploy/docker-multinode/master.sh
+   - name: Download kubectl
+     shell: curl -Lo /usr/local/bin/kubectl http://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubectl && chmod +x /usr/local/bin/kubectl
 
 - hosts: worker
   tasks:   
+   - name: Define master node
+     shell: export MASTER_IP=192.168.30.42
    - name: Run master node
      shell: /home/huanpc/kube-deploy/docker-multinode/worker.sh
 
