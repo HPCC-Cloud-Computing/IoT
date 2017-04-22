@@ -79,32 +79,32 @@ public class Controller implements InterworkingService {
 				response.setResponseStatusCode(ResponseStatusCode.OK);
 				return response;
 				// Bat, tat lap lich
-			case "switchOn":
-				if (timeDelay == null)
-					timeDelay = "0";
-				if (Activator.monitor != null) {
-					Activator.monitor.startWithDelayTime(Long
-							.valueOf(timeDelay));
-					response.setContent(ObixUtil.getMessage("switchOn"));
-				} else {
-					response.setContent(ObixUtil.getMessage("watting..."));
-				}
-				request.setReturnContentType(MimeMediaType.OBIX);
-				response.setResponseStatusCode(ResponseStatusCode.OK);
-				return response;
-			case "switchOff":
-				if (timeDelay == null)
-					timeDelay = "0";
-				if (Activator.monitor != null) {
-					Activator.monitor
-							.stopWithDelayTime(Long.valueOf(timeDelay));
-					response.setContent(ObixUtil.getMessage("switchOff"));
-				} else {
-					response.setContent(ObixUtil.getMessage("watting..."));
-				}
-				request.setReturnContentType(MimeMediaType.OBIX);
-				response.setResponseStatusCode(ResponseStatusCode.OK);
-				return response;
+//			case "switchOn":
+//				if (timeDelay == null)
+//					timeDelay = "0";
+//				if (Activator.monitor != null) {
+//					Activator.monitor.startWithDelayTime(Long
+//							.valueOf(timeDelay));
+//					response.setContent(ObixUtil.getMessage("switchOn"));
+//				} else {
+//					response.setContent(ObixUtil.getMessage("watting..."));
+//				}
+//				request.setReturnContentType(MimeMediaType.OBIX);
+//				response.setResponseStatusCode(ResponseStatusCode.OK);
+//				return response;
+//			case "switchOff":
+//				if (timeDelay == null)
+//					timeDelay = "0";
+//				if (Activator.monitor != null) {
+//					Activator.monitor
+//							.stopWithDelayTime(Long.valueOf(timeDelay));
+//					response.setContent(ObixUtil.getMessage("switchOff"));
+//				} else {
+//					response.setContent(ObixUtil.getMessage("watting..."));
+//				}
+//				request.setReturnContentType(MimeMediaType.OBIX);
+//				response.setResponseStatusCode(ResponseStatusCode.OK);
+//				return response;
 			case "timeResponse":
 				// Thoi gian gui du lieu
 				if (timeDelay != null) {

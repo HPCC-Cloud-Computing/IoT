@@ -127,6 +127,60 @@ public class ObixUtil {
 		obj.add(new Str("unit", unit));
 		return ObixEncoder.toString(obj);
 	}
+	public static String convertSensorDataRep(Monitor.SensorDataItem sensorItem){
+		Obj obj = new Obj();
+//		obj.add(new Str("appId", sensorItem.mAppId));		
+//		obj.add(new Str("ipeId", sensorItem.mIpeId));
+		obj.add(new Str("sensorId", sensorItem.mSensorId));
+		obj.add(new Str("clusterId", sensorItem.mClusterId));
+		obj.add(new Str("category", sensorItem.mCategory));
+		obj.add(new Str("type", sensorItem.mType));
+		obj.add(new Int("data", Integer.valueOf(sensorItem.mData)));
+		obj.add(new Str("unit", sensorItem.mUnit));
+		return ObixEncoder.toString(obj);
+	}
+	
+	public static String convertItemToDataRep(Monitor.Item item, int value, String timestampSensor, String numOfSensor, long timeReceived){
+		Obj obj = new Obj();
+		obj.add(new Str("itemId", item.itemName));
+		String category = " ";
+		String unit = "";
+		switch(Integer.valueOf(item.itemType)){
+			case TEMPERATURE_SENSOR_TYPE:
+				category = "temperature";
+				unit = "celsius";
+				break;
+			case AIR_HUMIDITY_SENSOR_TYPE:
+				category = "air_humidity";
+				unit = "ratio";
+				break;
+			case LIGHT_SENSOR_TYPE:
+				category = "light";
+				unit = "ISO";
+				break;
+			case HUMAN_APPEARANCE:
+				category = "human_appearance";
+				unit = "s";
+				break;
+		}
+		obj.add(new Str("platformId", "onem2m_1"));
+		obj.add(new Str("platformType", "onem2m"));
+		obj.add(new Str("clusterId", "fog_1"));
+		obj.add(new Str("category", category));
+		obj.add(new Int("data", value));
+		obj.add(new Str("timestamp_sensor", timestampSensor));
+		long timeSend = System.currentTimeMillis();
+		String timemillis = String.valueOf(timeSend);
+		String timeseconds = timemillis.substring(0, 10);
+		String millis = timemillis.substring(10);
+		String time = timeseconds+'.'+millis;
+		obj.add(new Str("timestamp_platform", time));
+		obj.add(new Str("time_platform_process", String.valueOf((timeSend-timeReceived)/1000.0)));
+		obj.add(new Str("num_of_sensor", numOfSensor));
+		obj.add(new Str("unit", unit));
+		return ObixEncoder.toString(obj);
+	}
+	
 	public static String getDataSubscriber(){
 //		Obj obj = new Obj();
 //		obj.add(new Str("su", "http://0.0.0.0:9090/monitor"));

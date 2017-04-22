@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: sensor-gen-2
+    namespace: kube-system
+spec:
+    replicas: 1
+    selector:
+      app: sensor-gen-2
+    template:
+      metadata:
+        name: sensor-gen-2
+        labels:
+          app: sensor-gen-2
+      spec:
+        containers:
+        - name: sensor-gen-2
+          image: huanphan/sensor-simulator:tet_case_delay
+          volumeMounts:
+          - name: sensor-config
+            mountPath: /SimulateSensor/config/config.cfg
+            subPath: config.cfg
+          - name: sensor-items
+            mountPath: /SimulateSensor/config/items.cfg
+            subPath: items.cfg
+        volumes:
+        - name: sensor-config
+          configMap:
+            name: sensor-config-2
+            items:
+            - key: config.2.cfg
+              path: config.cfg
+        - name: sensor-items
+          configMap:
+            name: sensor-items-2
+            items:
+            - key: items.2.cfg
+              path: items.cfg
+        restartPolicy: Always
+#        nodeSelector:
+#          fog-node: worker_1

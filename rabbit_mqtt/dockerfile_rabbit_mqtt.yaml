@@ -1,0 +1,14 @@
+FROM rabbitmq:3.6
+
+COPY ./rabbitmq_message_timestamp.ez /usr/lib/rabbitmq/lib/rabbitmq_server-3.6.8/plugins
+RUN rabbitmq-plugins enable --offline rabbitmq_management
+RUN rabbitmq-plugins enable --offline rabbitmq_mqtt
+RUN service rabbitmq-server restart
+RUN rabbitmq-plugins list
+RUN rabbitmq-plugins enable rabbitmq_message_timestamp
+
+# Fix nodename
+RUN echo 'NODENAME=rabbit@localhost' > /etc/rabbitmq/rabbitmq-env.conf
+
+EXPOSE 15672
+EXPOSE 1883

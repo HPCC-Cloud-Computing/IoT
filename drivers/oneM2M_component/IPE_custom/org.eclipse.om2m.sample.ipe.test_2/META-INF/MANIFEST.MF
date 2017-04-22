@@ -13,3 +13,4 @@ Import-Package: org.apache.commons.logging,
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.om2m.commons;bundle-version="1.0.0",
  com.google.gson;bundle-version="2.2.4"
+Bundle-ClassPath: .,libs/org.eclipse.paho.client.mqttv3.jar

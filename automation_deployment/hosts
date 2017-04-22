@@ -1,0 +1,17 @@
+[fog_master]
+192.168.30.44
+
+[cloud_master]
+192.168.30.46
+
+[master]
+192.168.30.44
+192.168.30.46
+
+[cloud_worker]
+
+[fog_worker]
+
+[worker]
+
+[all]

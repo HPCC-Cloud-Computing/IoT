@@ -1,0 +1,10 @@
+- hosts: master
+  tasks:
+   - name: Deploy heapster
+     shell: kubectl create -f heapster/deploy/fog-kube-config/influxdb
+     
+   - name: Deploy mqtt
+     shell: kubectl create -f kube-config-repo/mosquitto_mqtt
+
+   # - name: Deploy config
+   #   bash: /home/huanpc/kube-config-repo/test.config/create_configmap.sh

@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: iotplatform-simulator
+  namespace: kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        task: iotplatform
+        app: iotplatform-simulator
+    spec:
+      containers:
+      - name: iotplatform-simulator
+        image: huanphan/iot_platform_simulator:0.1
+        env:
+        - name: FOG_BROKER_HOST
+          value: rabbitmq-service
+        - name: FOG_BROKER_PORT
+          value: "5672"
+        - name: FOG_BROKER_AUTH
+          value: test:test@123
+        - name: CLOUD_BROKER_HOST
+          value: "188.166.238.158"
+        - name: CLOUD_BROKER_PORT
+          value: "30148"
+        - name: CLOUD_BROKER_AUTH
+          value: test:test@123
+
+

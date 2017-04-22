@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: measure-data-rate
+  namespace: cloud-kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        task: measure
+        app: measure-data-rate
+    spec:
+      containers:
+      - name: measure-data-rate
+        image: huanphan/measure-data-rate:test_case_deplay
+        volumeMounts:
+        - name: measure-items
+          mountPath: /usr/src/app/items.cfg
+          subPath: items.cfg
+      volumes:
+      - name: measure-items
+        configMap:
+          name: measure-items
+          items:
+          - key: items.cfg
+            path: items.cfg
+

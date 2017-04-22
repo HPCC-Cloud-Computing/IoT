@@ -1,12 +1,20 @@
 __author__ = 'huanpc'
 
 import rabbitpy
+import os
 
-API_KEY = 'amqp://yhjylhjo:rOYVRlLp47lteZKBJm_2XN02uoy3onKK@white-mynah-bird.rmq.cloudamqp.com/yhjylhjo'
+
+API_KEY = ''
+if os.environ.get('AMPQ_API_KEY'):
+    API_KEY = os.environ['AMPQ_API_KEY']
 
 
 def publish_message(message, queue_name='hello'):
-    rabbitpy.publish(API_KEY, exchange_name='', routing_key=queue_name, body=message)
+    if API_KEY:
+        rabbitpy.publish(API_KEY, exchange_name='', routing_key=queue_name, body=message)
+        return True
+    else:
+        return False
 
 
 def consume_message(queue_name='hello', all=False):

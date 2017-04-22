@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . /usr/src/app
 
-#CMD [ "python3", "./main.py" ]
+CMD [ "python3", "./main.py" ]

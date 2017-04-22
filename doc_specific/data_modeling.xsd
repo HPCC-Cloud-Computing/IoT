@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="data">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="timestamp" type="xs:integer"/>
+				<xs:element name="endpoint" type="xs:string"/>
+				<xs:element name="metric_name">
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="temperature"/>
+						<xs:enumeration value="air_humidity"/>
+						<xs:enumeration value="light"/>
+						<xs:enumeration value="human_appearance"/>
+						<xs:enumeration value="cpu_usage_rate"/>
+						<xs:enumeration value="memory_usage"/>
+						<xs:enumeration value="network_in"/>
+						<xs:enumeration value="network_out"/>
+						<xs:enumeration value="storage_usage"/>
+					</xs:restriction>
+				</xs:element>
+				<xs:element name="type">
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="gauge"/>
+						<xs:enumeration value="counter"/>
+						<xs:enumeration value="histogram"/>
+						<xs:enumeration value="summary"/>
+					</xs:restriction>
+				</xs:element>
+				<xs:element name="data_type">
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="float"/>
+						<xs:enumeration value="int"/>
+						<xs:enumeration value="double"/>
+						<xs:enumeration value="short"/>
+					</xs:restriction>
+				</xs:element>
+				<xs:element name="unit">
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="celsius"/>
+						<xs:enumeration value="fahrenheit"/>
+						<xs:enumeration value="kbps"/>
+						<xs:enumeration value="seconds"/>
+						<xs:enumeration value="count"/>
+						<xs:enumeration value="milicore"/>
+						<xs:enumeration value="byte"/>
+						<xs:enumeration value="iso"/>
+						<xs:enumeration value="ratio"/>
+					</xs:restriction>
+				</xs:element>
+				<xs:element name="polling_frequency" type="xs:float"/>		
+				<xs:element name="value" type="xs:float"/>
+				<xs:element name="category">
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="data_sensing"/>
+						<xs:enumeration value="resource"/>
+					</xs:restriction>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

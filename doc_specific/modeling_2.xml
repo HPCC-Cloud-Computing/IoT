@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Model>
+	<Id>143543543</Id>
+	<Timestamp>149342332</Timestamp>
+	<Metric>
+		<MetricName>Memory usage</MetricName>		
+		<Units>
+			<Data>Bytes</Data>
+		</Units>
+		<MetricType>Gauge</MetricType>
+	</Metric>
+	<DataPoint>
+		<DataType>Integer</DataType>
+		<DataFrequency>10</DataFrequency>
+		<Value>102400</Value>
+	</DataPoint>
+	<Provider>
+		<ResourceId>openhab_542425</ResourceId>
+		<Endpoint>http://192.168.30.44:8300/metrics/ram_usage</Endpoint>
+		<Status>active</Status>
+		<Description>IoT Platform memory usage</Description>
+		<PlatformType>OpenHAB</PlatformType>
+		<Version>0.8</Version>
+	</Provider>
+</Model>
+
+<Model>
+	<Id>143543544</Id>
+	<Timestamp>1493425454</Timestamp>
+	<Metric>
+		<MetricName>OutsideTemperature</MetricName>		
+		<Units>
+			<Temperature>Celcius</Temperature>
+		</Units>
+		<MetricType>Gauge</MetricType>
+	</Metric>
+	<DataPoint>
+		<DataType>Integer</DataType>
+		<DataFrequency>10</DataFrequency>
+		<Value>30</Value>
+	</DataPoint>
+	<Provider>
+		<ResourceId>sensor_temperature_34234</ResourceId>
+		<Endpoint>http://192.168.30.44:8300/device/values</Endpoint>
+		<Status>active</Status>
+		<Description>IoT Lab outside temperature mesurement</Description>
+		<SensorType>Temperature</SensorType>
+		<SensorLocation>Outside IoT Lab</SensorLocation>
+		<Manufacturer>Sony</Manufacturer>
+		<PlatformListener>openhab_542425</PlatformListener>
+	</Provider>
+</Model>
+
+<Model>
+	<Id>143543545</Id>
+	<Timestamp>1493425456</Timestamp>
+	<Metric>
+		<MetricName>BodyTemperature</MetricName>		
+		<Units>
+			<Temperature>Celcius</Temperature>
+		</Units>
+		<MetricType>Gauge</MetricType>
+	</Metric>
+	<DataPoint>
+		<DataType>Integer</DataType>
+		<DataFrequency>30</DataFrequency>
+		<Value>37</Value>
+	</DataPoint>
+	<Provider>
+		<ResourceId>sensor_temperature_6545</ResourceId>
+		<Endpoint>http://192.168.34.43:8300/device/values</Endpoint>
+		<Status>active</Status>
+		<Description>Body temperature mesurement on the wirst</Description>
+		<SensorType>Temperature</SensorType>
+		<SensorLocation>On the Wirst</SensorLocation>
+		<Manufacturer>Sony</Manufacturer>
+		<PlatformListener>openhab_542425</PlatformListener>
+	</Provider>
+</Model>
+
+<Model>
+	<Id>143543547</Id>
+	<Timestamp>1493425460</Timestamp>
+	<Metric>
+		<MetricName>AirHumidity</MetricName>		
+		<Units>
+			<Statistic>Percentage</Statistic>
+		</Units>
+		<MetricType>Gauge</MetricType>
+	</Metric>
+	<DataPoint>
+		<DataType>Float</DataType>
+		<DataFrequency>1</DataFrequency>
+		<Value>0.5</Value>
+	</DataPoint>
+	<Provider>
+		<ResourceId>sensor_air_mesurement_3243</ResourceId>
+		<Endpoint>http://192.168.55.43:8300/device/values</Endpoint>
+		<Status>active</Status>
+		<Description>Air humidity mesurement</Description>
+		<SensorType>Air Humidiry</SensorType>
+		<SensorLocation>Top of building</SensorLocation>
+		<Manufacturer>Panasonic</Manufacturer>
+		<PlatformListener>onem2m_34234</PlatformListener>
+	</Provider>
+</Model>
+
+
+<Model>
+	<Id>143543545</Id>
+	<Timestamp>149342354</Timestamp>
+	<Metric>
+		<MetricName>CPU usage rate</MetricName>		
+		<Units>
+			<Statistic>Percentage</Statistic>
+		</Units>
+		<MetricType>Gauge</MetricType>
+	</Metric>
+	<DataPoint>
+		<DataType>Float</DataType>
+		<DataFrequency>10</DataFrequency>
+		<Value>0.8</Value>
+	</DataPoint>
+	<Provider>
+		<ResourceId>openhab_542425</ResourceId>
+		<Endpoint>http://192.168.30.44:8300/metrics/cpu_usage_rate</Endpoint>
+		<Status>active</Status>
+		<Description>IoT Platform cpu usage rate</Description>
+		<PlatformType>OpenHAB</PlatformType>
+		<Version>0.8</Version>
+	</Provider>
+</Model>

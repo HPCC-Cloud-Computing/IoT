@@ -1,0 +1,48 @@
+# Data sensing retrieve from onem2m
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<obj>
+	<str val="onem2m_pf_2" name="itemId"/>
+	<str val="onem2m_1" name="platformId"/>
+	<str val="onem2m" name="platformType"/>
+	<str val="fog_1" name="clusterId"/>
+	<str val="temperature" name="category"/>
+	<int val="86" name="data"/>
+	<str val="celsius" name="unit"/>
+</obj>
+
+# CPU resource retrieve from onem2m platform
+
+{
+	"('memory / usage', None)": 
+	[{
+		'time': '2017-04-03T07:00:00Z',
+		'host_id': '128.199.91.17',
+		'namespace_id': '1a480b89-10a1-11e7-8989-7eb92be1eeb0',
+		'container_base_image': 'huanphan/onem2m:1.0',
+		'labels': 'app:onem2m-1',
+		'pod_name': 'onem2m-1-z8zn2',
+		'type': 'pod_container',
+		'value': 8368128,
+		'nodename': '128.199.91.17',
+		'pod_namespace': 'kube-system',
+		'container_name': 'onem2m-1',
+		'pod_id': 'eff777e6-10a7-11e7-8989-7eb92be1eeb0',
+		'hostname': '128.199.91.17',
+		'namespace_name': 'kube-system'
+	}, {
+		'time': '2017-04-03T07:00:00Z',
+		'host_id': '128.199.91.17',
+		'namespace_id': '1a480b89-10a1-11e7-8989-7eb92be1eeb0',
+		'container_base_image': 'huanphan/onem2m:1.0',
+		'labels': 'app:onem2m-1',
+		'pod_name': 'onem2m-1-dm6mk',
+		'type': 'pod_container',
+		'value': 235900928,
+		'nodename': '128.199.91.17',
+		'pod_namespace': 'kube-system',
+		'container_name': 'onem2m-1',
+		'pod_id': '8cac43ee-1819-11e7-8989-7eb92be1eeb0',
+		'hostname': '128.199.91.17',
+		'namespace_name': 'kube-system'
+	}]
+}

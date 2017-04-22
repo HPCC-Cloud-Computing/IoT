@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: openhab-1
+    namespace: kube-system
+spec:
+    replicas: 1
+    selector:
+      app: openhab-1
+    template:
+      metadata:
+        name: openhab-1
+        labels:
+          app: openhab-1
+      spec:
+        containers:
+        - name: openhab-1
+          image: huanphan/openhab:test_1
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 512Mi
+          ports:
+          - containerPort: 8080
+          volumeMounts:
+          - name: openhab-cfg
+            mountPath: /openhab/configurations/openhab.cfg
+            subPath: openhab.cfg
+          # - name: openhab-sitemap
+          #   mountPath: /openhab/configurations/sitemap
+          - name: openhab-items
+            mountPath: /openhab/configurations/items
+#          env:
+#          - name: CO_ORDINATOR_DOMAIN
+#            valueFrom:
+#              configMapKeyRef:
+#                name: co-ordinator-config
+#                key: co-ordinator.domain
+        volumes:
+        - name: openhab-cfg
+          configMap:
+            name: openhab-cfg-1
+            items:
+            - key: openhab.1.cfg
+              path: openhab.cfg
+        - name: openhab-items
+          configMap:
+            name: openhab-items-1
+            items:
+            - key: demo.1.items
+              path: demo.items
+        # - name: openhab-sitemap
+        #   configMap:
+        #     name: openhab-sitemap
+        #     items:
+        #     - key: demo.sitemap
+        #       path: demo.sitemap
+        restartPolicy: Always
+        nodeSelector:
+          fog-node: worker_1

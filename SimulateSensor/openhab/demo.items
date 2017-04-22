@@ -1,0 +1,10 @@
+Number sdfd_sensor_0 "Value [%.1f]" {mqtt="<[mqttIn:sensor_0:state:default], >[mqttOut:sensor_0:state:*:default]"}
+Number sdfd_sensor_1 "Value [%.1f]" {mqtt="<[mqttIn:sensor_1:state:default], >[mqttOut:sensor_1:state:*:default]"}
+Number sdfd_sensor_2 "Value [%.1f]" {mqtt="<[mqttIn:sensor_2:state:default], >[mqttOut:sensor_2:state:*:default]"}
+Number sdfd_sensor_3 "Value [%.1f]" {mqtt="<[mqttIn:sensor_3:state:default], >[mqttOut:sensor_3:state:*:default]"}
+Number sdfd_sensor_4 "Value [%.1f]" {mqtt="<[mqttIn:sensor_4:state:default], >[mqttOut:sensor_4:state:*:default]"}
+Number sdfd_sensor_5 "Value [%.1f]" {mqtt="<[mqttIn:sensor_5:state:default], >[mqttOut:sensor_5:state:*:default]"}
+Number sdfd_sensor_6 "Value [%.1f]" {mqtt="<[mqttIn:sensor_6:state:default], >[mqttOut:sensor_6:state:*:default]"}
+Number sdfd_sensor_7 "Value [%.1f]" {mqtt="<[mqttIn:sensor_7:state:default], >[mqttOut:sensor_7:state:*:default]"}
+Number sdfd_sensor_8 "Value [%.1f]" {mqtt="<[mqttIn:sensor_8:state:default], >[mqttOut:sensor_8:state:*:default]"}
+Number sdfd_sensor_9 "Value [%.1f]" {mqtt="<[mqttIn:sensor_9:state:default], >[mqttOut:sensor_9:state:*:default]"}

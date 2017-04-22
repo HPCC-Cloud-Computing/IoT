@@ -1,0 +1,13 @@
+sitemap demo label="Demo House"
+{
+Text item=sdfd_sensor_0
+Text item=sdfd_sensor_1
+Text item=sdfd_sensor_2
+Text item=sdfd_sensor_3
+Text item=sdfd_sensor_4
+Text item=sdfd_sensor_5
+Text item=sdfd_sensor_6
+Text item=sdfd_sensor_7
+Text item=sdfd_sensor_8
+Text item=sdfd_sensor_9
+}

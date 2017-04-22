@@ -1,0 +1,15 @@
+String openhab_pf_16 "[%s]" {mqtt="<[mqttIn:openhab_pf_16/temperature:state:default], >[mqttOut:openhab_pf_16/temperature:state:*:default]"}
+String openhab_pf_17 "[%s]" {mqtt="<[mqttIn:openhab_pf_17/temperature:state:default], >[mqttOut:openhab_pf_17/temperature:state:*:default]"}
+String openhab_pf_18 "[%s]" {mqtt="<[mqttIn:openhab_pf_18/temperature:state:default], >[mqttOut:openhab_pf_18/temperature:state:*:default]"}
+String openhab_pf_19 "[%s]" {mqtt="<[mqttIn:openhab_pf_19/temperature:state:default], >[mqttOut:openhab_pf_19/temperature:state:*:default]"}
+String openhab_pf_20 "[%s]" {mqtt="<[mqttIn:openhab_pf_20/temperature:state:default], >[mqttOut:openhab_pf_20/temperature:state:*:default]"}
+String openhab_pf_21 "[%s]" {mqtt="<[mqttIn:openhab_pf_21/temperature:state:default], >[mqttOut:openhab_pf_21/temperature:state:*:default]"}
+String openhab_pf_22 "[%s]" {mqtt="<[mqttIn:openhab_pf_22/temperature:state:default], >[mqttOut:openhab_pf_22/temperature:state:*:default]"}
+String openhab_pf_23 "[%s]" {mqtt="<[mqttIn:openhab_pf_23/temperature:state:default], >[mqttOut:openhab_pf_23/temperature:state:*:default]"}
+String openhab_pf_24 "[%s]" {mqtt="<[mqttIn:openhab_pf_24/temperature:state:default], >[mqttOut:openhab_pf_24/temperature:state:*:default]"}
+String openhab_pf_25 "[%s]" {mqtt="<[mqttIn:openhab_pf_25/temperature:state:default], >[mqttOut:openhab_pf_25/temperature:state:*:default]"}
+String openhab_pf_26 "[%s]" {mqtt="<[mqttIn:openhab_pf_26/temperature:state:default], >[mqttOut:openhab_pf_26/temperature:state:*:default]"}
+String openhab_pf_27 "[%s]" {mqtt="<[mqttIn:openhab_pf_27/temperature:state:default], >[mqttOut:openhab_pf_27/temperature:state:*:default]"}
+String openhab_pf_28 "[%s]" {mqtt="<[mqttIn:openhab_pf_28/temperature:state:default], >[mqttOut:openhab_pf_28/temperature:state:*:default]"}
+String openhab_pf_29 "[%s]" {mqtt="<[mqttIn:openhab_pf_29/temperature:state:default], >[mqttOut:openhab_pf_29/temperature:state:*:default]"}
+String openhab_pf_30 "[%s]" {mqtt="<[mqttIn:openhab_pf_30/temperature:state:default], >[mqttOut:openhab_pf_30/temperature:state:*:default]"}

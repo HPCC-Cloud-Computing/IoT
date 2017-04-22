@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cloudcollector-simulator
+  namespace: cloud-kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        task: cloudcollector
+        app: cloudcollector-simulator
+    spec:
+      containers:
+      - name: cloudcollector-simulator
+        image: huanphan/cloud_collector_simulator:0.1
+        env:        
+        - name: CLOUD_BROKER_HOST
+          value: rabbitmq-service
+        - name: CLOUD_BROKER_PORT
+          value: "5672"
+        - name: CLOUD_BROKER_AUTH
+          value: test:test@123
+
+

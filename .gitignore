@@ -1,0 +1,4 @@
+**/*.pyc
+**/venv/
+**/.idea/
+document_not_public/

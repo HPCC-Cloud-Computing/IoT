@@ -60,6 +60,7 @@ rtt min/avg/max/mdev = 0.366/0.366/0.366/0.000 ms
 $ kubectl apply -f https://git.io/weave-kube
 ```
  - This one-liner will create a DaemonSet, a Kubernetes feature that runs one instance on each node
+ 
 #### Check Weave Net
 ```bash
 $ kubectl get pods --all-namespaces
@@ -77,3 +78,4 @@ $ kubectl get pods --all-namespaces
     hello-2533203682-5opib   1/1   Running  0         9s   10.32.0.2
 ```
  - We can see that the IP address of this pod is within Weave’s default range.
+[Reference](https://www.weave.works/docs/net/latest/kube-addon/)
